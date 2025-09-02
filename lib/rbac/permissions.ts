@@ -201,6 +201,14 @@ export async function canAccessAdmin(userId: string): Promise<boolean> {
 }
 
 /**
+ * Generic permission checker - maps resource.action to permission
+ */
+export async function checkPermission(userId: string, resource: string, action: string): Promise<boolean> {
+  const permission = `${resource}:${action}` as Permission
+  return await hasPermission(userId, permission)
+}
+
+/**
  * Assign role to user
  */
 export async function assignRole(userId: string, roleName: string, assignedBy: string): Promise<boolean> {
