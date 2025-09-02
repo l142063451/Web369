@@ -1,4 +1,5 @@
 import './globals.css'
+import { PWARegister } from '@/components/pwa/PWARegister'
 
 export const metadata = {
   title: 'Ummid Se Hari - Smart Village PWA',
@@ -25,8 +26,13 @@ export default function RootLayout({
         <meta name="theme-color" content="#16A34A" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Ummid Se Hari" />
+        {/* PWA iOS icons */}
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.svg" />
       </head>
       <body className="font-sans antialiased">
+        <PWARegister />
         {children}
       </body>
     </html>

@@ -1,3 +1,6 @@
+import { WebPushSubscribe } from '@/components/pwa/WebPushSubscribe'
+import { PWAStatus } from '@/components/pwa/PWAStatus'
+
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-yellow-50 p-4">
@@ -13,6 +16,11 @@ export default function HomePage() {
             Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithoragarh, Uttarakhand
           </p>
         </header>
+
+        {/* PWA Features Notification */}
+        <div className="mb-8">
+          <WebPushSubscribe />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           <div className="bg-white rounded-lg shadow-md p-6">
@@ -44,11 +52,23 @@ export default function HomePage() {
         </div>
 
         <div className="text-center mt-12">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <h4 className="font-medium text-blue-900 mb-2">PWA Features Active</h4>
+            <ul className="text-sm text-blue-700 space-y-1">
+              <li>✓ Offline browsing and form submission queuing</li>
+              <li>✓ Push notifications for important updates</li>
+              <li>✓ Installable as a native app</li>
+              <li>✓ Background sync when connection restored</li>
+            </ul>
+          </div>
           <p className="text-sm text-gray-500">
-            PWA Bootstrap Complete - PR01 Implementation
+            PR03 Complete - PWA & Service Worker Implementation
           </p>
         </div>
       </div>
+      
+      {/* PWA Status Indicator */}
+      <PWAStatus />
     </main>
   )
 }
