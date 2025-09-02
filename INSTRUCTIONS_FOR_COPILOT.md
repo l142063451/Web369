@@ -918,8 +918,3 @@ export const solarFromArea = (areaM2: number, usablePct: number, wpPerM2: number
 Begin with **PR01 – Repo Bootstrap & Tooling** as defined.
 Use the files and snippets above exactly, expand into full implementation aligning with `REQUIREMENTS_AND_GOALS.md`.
 On PR creation, **update `status.md`** and attach **Storybook & Playwright screenshots** artifacts.
-
-```
-
-If you want, say **“Proceed to Master Prompt”** and I’ll generate the final, single-shot Copilot Agent master command that orchestrates all PRs end-to-end.
-```
