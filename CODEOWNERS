@@ -1,0 +1,21 @@
+# Global owners - require at least 1 approval for all files
+* @l142063451
+
+# Core application files require admin approval
+/app/ @l142063451
+/components/ @l142063451
+/lib/ @l142063451
+/prisma/ @l142063451
+
+# Security and configuration files require admin approval
+/.env.example @l142063451
+/next.config.mjs @l142063451
+/scripts/csp.js @l142063451
+/.github/ @l142063451
+/Dockerfile @l142063451
+/compose.yml @l142063451
+
+# Documentation can be updated by contributors
+/docs/ @l142063451
+README.md @l142063451
+status.md @l142063451
