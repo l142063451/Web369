@@ -47,7 +47,7 @@ interface Page {
   seo: any
   version: number
   updatedAt: Date
-  publishedAt: Date | null | undefined
+  publishedAt: Date | null
 }
 
 interface PageEditorProps {

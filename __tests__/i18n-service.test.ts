@@ -3,17 +3,17 @@ import { describe, beforeEach, it, expect, jest } from '@jest/globals'
 // Mock Prisma client
 const mockPrisma = {
   translationKey: {
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    create: jest.fn(),
-    delete: jest.fn(),
-    groupBy: jest.fn(),
+    findMany: jest.fn() as jest.MockedFunction<any>,
+    findUnique: jest.fn() as jest.MockedFunction<any>,
+    create: jest.fn() as jest.MockedFunction<any>,
+    delete: jest.fn() as jest.MockedFunction<any>,
+    groupBy: jest.fn() as jest.MockedFunction<any>,
   },
   translationValue: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
+    findUnique: jest.fn() as jest.MockedFunction<any>,
+    findMany: jest.fn() as jest.MockedFunction<any>,
+    create: jest.fn() as jest.MockedFunction<any>,
+    update: jest.fn() as jest.MockedFunction<any>,
   },
 }
 
