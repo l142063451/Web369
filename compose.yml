@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://postgres:postgres@db:5432/app
+      REDIS_URL: redis://cache:6379
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      CLAMAV_HOST: clamav
+      CLAMAV_PORT: 3310
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - db
+      - cache
+      - clamav
+      - mailhog
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: 
+      - "5432:5432"
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7
+    ports: 
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redisdata:/data
+
+  clamav:
+    image: clamav/clamav:1.2
+    ports: 
+      - "3310:3310"
+    volumes:
+      - clamav:/var/lib/clamav
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+
+volumes:
+  pgdata:
+  redisdata:
+  clamav:
