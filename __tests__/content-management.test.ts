@@ -8,19 +8,19 @@ import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals
 // Mock Prisma client
 const mockPrisma = {
   page: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    findFirst: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    count: jest.fn(),
+    create: jest.fn() as jest.MockedFunction<any>,
+    findUnique: jest.fn() as jest.MockedFunction<any>,
+    findFirst: jest.fn() as jest.MockedFunction<any>,
+    findMany: jest.fn() as jest.MockedFunction<any>,
+    update: jest.fn() as jest.MockedFunction<any>,
+    delete: jest.fn() as jest.MockedFunction<any>,
+    count: jest.fn() as jest.MockedFunction<any>,
   },
   media: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    count: jest.fn(),
+    create: jest.fn() as jest.MockedFunction<any>,
+    findMany: jest.fn() as jest.MockedFunction<any>,
+    update: jest.fn() as jest.MockedFunction<any>,
+    count: jest.fn() as jest.MockedFunction<any>,
   },
 }
 
@@ -43,7 +43,7 @@ jest.mock('@/lib/auth/audit-logger', () => ({
 }))
 
 // Mock DOMPurify
-const mockSanitize = jest.fn((html: string) => html)
+const mockSanitize = jest.fn((html: string, options?: any) => html)
 jest.mock('isomorphic-dompurify', () => ({
   __esModule: true,
   default: {
@@ -122,6 +122,7 @@ describe('ContentService', () => {
             slug: 'test-page',
             title: 'Test Page',
             locale: 'en',
+            blocks: [],
           },
           'user-1'
         )
@@ -161,6 +162,7 @@ describe('ContentService', () => {
         {
           slug: 'test-page',
           title: 'Test Page',
+          locale: 'en',
           blocks: [{
             id: 'section-1',
             title: 'Section 1',

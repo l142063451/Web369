@@ -22,7 +22,7 @@ interface Page {
   version: number
   createdBy: string
   updatedBy: string
-  publishedAt?: Date
+  publishedAt: Date | null
   createdAt: Date
   updatedAt: Date
 }

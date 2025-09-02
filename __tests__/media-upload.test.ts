@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals
 global.fetch = jest.fn() as jest.MockedFunction<typeof fetch>
 
 // Mock S3 Client
-const mockGetSignedUrl = jest.fn()
+const mockGetSignedUrl = jest.fn() as jest.MockedFunction<any>
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
   getSignedUrl: mockGetSignedUrl,
 }))
@@ -18,7 +18,7 @@ const mockSocket = {
   connect: jest.fn(),
   write: jest.fn(),
   destroy: jest.fn(),
-  on: jest.fn(),
+  on: jest.fn() as jest.MockedFunction<(event: string, listener: (...args: any[]) => void) => any>,
 }
 
 jest.mock('net', () => ({
@@ -156,7 +156,7 @@ describe('ClamAV Integration', () => {
   describe('scanFile', () => {
     it('should scan clean file successfully', async () => {
       // Mock socket events for clean file
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -176,7 +176,7 @@ describe('ClamAV Integration', () => {
 
     it('should detect infected file', async () => {
       // Mock socket events for infected file
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -206,7 +206,7 @@ describe('ClamAV Integration', () => {
     })
 
     it('should handle connection error', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'error') {
           setTimeout(() => callback(new Error('Connection refused')), 10)
         }
@@ -224,15 +224,16 @@ describe('ClamAV Integration', () => {
     it('should download and scan file from URL', async () => {
       const mockResponse = {
         ok: true,
-        arrayBuffer: jest.fn().mockResolvedValue(new ArrayBuffer(10)),
+        arrayBuffer: jest.fn() as jest.MockedFunction<any>,
       }
+      mockResponse.arrayBuffer.mockResolvedValue(new ArrayBuffer(10))
 
       ;(fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(
         mockResponse as any
       )
 
       // Mock successful scan
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'connect') setTimeout(callback, 10)
         else if (event === 'data') setTimeout(() => callback(Buffer.from('stream: OK\0')), 20)
         else if (event === 'close') setTimeout(callback, 30)
@@ -295,7 +296,7 @@ describe('ClamAV Integration', () => {
 
   describe('checkClamAVHealth', () => {
     it('should return health status for available daemon', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -312,7 +313,7 @@ describe('ClamAV Integration', () => {
     })
 
     it('should return unavailable status for connection failure', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: (...args: any[]) => void) => {
         if (event === 'error') {
           setTimeout(() => callback(new Error('Connection refused')), 10)
         }
