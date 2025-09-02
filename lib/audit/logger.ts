@@ -21,6 +21,8 @@ export type AuditAction =
   | 'form.create'
   | 'form.update'
   | 'form.delete'
+  | 'form.submit'
+  | 'form.submit_error'
   | 'submission.create'
   | 'submission.update'
   | 'submission.bulk_update'
