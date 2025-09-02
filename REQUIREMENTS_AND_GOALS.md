@@ -1,4 +1,4 @@
-```markdown
+
 # REQUIREMENTS_AND_GOALS.md
 > Project: **“उम्मीद से हरी | Ummid Se Hari”** — Smart, Green & Transparent Village PWA  
 > Locale: Damday–Chuanala, Gangolihat, Pithoragarh, Uttarakhand, India  
@@ -544,5 +544,3 @@ Agents & humans must **update `status.md` at the end of every PR**.
 
 If these **Requirements & Goals** are accepted, the next file will be **`INSTRUCTIONS_FOR_COPILOT.md`** (engineering SOP + step-by-step agent plan), followed by the **Master Copilot Agent Prompt**.
 
-**Reply with “Proceed” to continue.**
-```
