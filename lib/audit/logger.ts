@@ -17,6 +17,18 @@ export type AuditAction =
   | 'REJECT'
   | 'MODERATE'
   | 'IMPORT'
+  // Form-specific actions
+  | 'form.create'
+  | 'form.update'
+  | 'form.delete'
+  | 'submission.create'
+  | 'submission.update'
+  | 'submission.bulk_update'
+  | 'sla.escalation'
+  | 'sla.escalation_failed'
+  | 'sla_worker.error'
+  | 'sla_worker.job_completed'
+  | 'sla_worker.job_failed'
 
 export interface AuditLogData {
   actorId: string
