@@ -159,6 +159,9 @@ export const apiLimiter = new RateLimiter({
   keyGenerator: (identifier) => `api:${identifier}`,
 })
 
+// Default rate limiter instance
+export const rateLimiter = formLimiter
+
 export const uploadLimiter = new RateLimiter({
   windowMs: 60 * 1000, // 1 minute
   maxRequests: 5, // 5 uploads per minute

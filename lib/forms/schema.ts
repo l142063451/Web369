@@ -208,10 +208,31 @@ export function formToZodSchema(formSchema: FormSchema): z.ZodObject<any> {
 }
 
 /**
+ * Generate Zod schema from field definitions
+ */
+export function generateZodSchema(fields: FormFieldDefinition[]): z.ZodObject<any> {
+  const schemaFields: Record<string, z.ZodType<unknown>> = {}
+
+  for (const field of fields) {
+    schemaFields[field.id] = fieldToZodSchema(field)
+  }
+
+  return z.object(schemaFields)
+}
+
+/**
  * Validate form data against schema
  */
 export function validateFormData(formSchema: FormSchema, data: Record<string, unknown>) {
   const zodSchema = formToZodSchema(formSchema)
+  return zodSchema.safeParse(data)
+}
+
+/**
+ * Validate form data against field definitions
+ */
+export function validateFormDataFromFields(data: Record<string, unknown>, fields: FormFieldDefinition[]) {
+  const zodSchema = generateZodSchema(fields)
   return zodSchema.safeParse(data)
 }
 
