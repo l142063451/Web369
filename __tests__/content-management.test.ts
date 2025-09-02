@@ -3,7 +3,7 @@
  * Tests for content service, API routes, and components
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals'
+// Jest globals are available through jest.setup.js
 
 // Mock Prisma client
 const mockPrisma = {
@@ -122,6 +122,7 @@ describe('ContentService', () => {
             slug: 'test-page',
             title: 'Test Page',
             locale: 'en',
+            blocks: []
           },
           'user-1'
         )
@@ -161,6 +162,7 @@ describe('ContentService', () => {
         {
           slug: 'test-page',
           title: 'Test Page',
+          locale: 'en',
           blocks: [{
             id: 'section-1',
             title: 'Section 1',
