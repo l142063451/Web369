@@ -16,6 +16,7 @@ export type AuditAction =
   | 'APPROVE'
   | 'REJECT'
   | 'MODERATE'
+  | 'IMPORT'
 
 export interface AuditLogData {
   actorId: string
