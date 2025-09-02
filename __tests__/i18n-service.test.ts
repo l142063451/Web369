@@ -1,4 +1,4 @@
-import { describe, beforeEach, it, expect, jest } from '@jest/globals'
+// Jest globals are available through jest.setup.js
 
 // Mock Prisma client
 const mockPrisma = {

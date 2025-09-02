@@ -2,7 +2,7 @@
  * Media Upload and ClamAV Integration Tests
  */
 
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals'
+// Jest globals are available through jest.setup.js
 
 // Mock fetch for Node.js environment
 global.fetch = jest.fn() as jest.MockedFunction<typeof fetch>
@@ -156,7 +156,7 @@ describe('ClamAV Integration', () => {
   describe('scanFile', () => {
     it('should scan clean file successfully', async () => {
       // Mock socket events for clean file
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -176,7 +176,7 @@ describe('ClamAV Integration', () => {
 
     it('should detect infected file', async () => {
       // Mock socket events for infected file
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -206,7 +206,7 @@ describe('ClamAV Integration', () => {
     })
 
     it('should handle connection error', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'error') {
           setTimeout(() => callback(new Error('Connection refused')), 10)
         }
@@ -232,7 +232,7 @@ describe('ClamAV Integration', () => {
       )
 
       // Mock successful scan
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'connect') setTimeout(callback, 10)
         else if (event === 'data') setTimeout(() => callback(Buffer.from('stream: OK\0')), 20)
         else if (event === 'close') setTimeout(callback, 30)
@@ -295,7 +295,7 @@ describe('ClamAV Integration', () => {
 
   describe('checkClamAVHealth', () => {
     it('should return health status for available daemon', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'connect') {
           setTimeout(callback, 10)
         } else if (event === 'data') {
@@ -312,7 +312,7 @@ describe('ClamAV Integration', () => {
     })
 
     it('should return unavailable status for connection failure', async () => {
-      mockSocket.on.mockImplementation((event, callback) => {
+      mockSocket.on.mockImplementation((event: string, callback: any) => {
         if (event === 'error') {
           setTimeout(() => callback(new Error('Connection refused')), 10)
         }

@@ -105,7 +105,7 @@ export function MediaUpload({
       xhr.setRequestHeader('Content-Type', uploadedFile.file.type)
       xhr.send(uploadedFile.file)
     })
-  }, [])
+  }, [onUploadComplete, updateFileStatus])
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (uploadedFiles.length + acceptedFiles.length > maxFiles) {
