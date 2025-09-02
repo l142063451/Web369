@@ -2,15 +2,64 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { canAccessAdmin, requiresTwoFA } from '@/lib/rbac/permissions'
 import { checkRateLimit, authLimiter, apiLimiter, getClientIdentifier } from '@/lib/queue/rate-limit'
+import createIntlMiddleware from 'next-intl/middleware'
+import { locales, defaultLocale } from '@/i18n'
+
+// Create the internationalization middleware
+const intlMiddleware = createIntlMiddleware({
+  locales,
+  defaultLocale,
+  localePrefix: 'as-needed'
+})
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   
+  // Skip i18n for API routes, static files, and auth callbacks
+  const shouldSkipIntl = [
+    '/api',
+    '/_next',
+    '/favicon.ico',
+    '/robots.txt',
+    '/sitemap.xml',
+    '/manifest.json',
+    '/sw.js',
+    '/auth/callback'
+  ].some(path => pathname.startsWith(path))
+
+  // Handle internationalization first for non-API routes
+  if (!shouldSkipIntl) {
+    const intlResponse = intlMiddleware(request)
+    if (intlResponse) {
+      // If intl middleware returned a redirect, we need to continue with our checks
+      const url = new URL(intlResponse.headers.get('location') || request.url)
+      if (intlResponse.status >= 300 && intlResponse.status < 400) {
+        // This is a redirect, let's check if we need additional auth checks
+        const newRequest = new NextRequest(url, request)
+        const authResult = await handleRouteProtection(newRequest)
+        if (authResult && authResult.status !== 200) {
+          return authResult
+        }
+        return intlResponse
+      }
+    }
+  }
+  
   // Apply rate limiting to all requests
-  await applyRateLimit(request)
+  const rateLimitResult = await applyRateLimit(request)
+  if (rateLimitResult) {
+    return rateLimitResult
+  }
+  
+  // Handle route protection (admin, API, auth)
+  return await handleRouteProtection(request)
+}
+
+async function handleRouteProtection(request: NextRequest) {
+  const { pathname } = request.nextUrl
   
   // Handle admin routes
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/admin') || (pathname.match(/^\/[a-z]{2}\/admin/) && locales.some(locale => pathname.startsWith(`/${locale}/admin`)))) {
     return await handleAdminRoutes(request)
   }
   
@@ -20,7 +69,7 @@ export async function middleware(request: NextRequest) {
   }
   
   // Handle auth routes
-  if (pathname.startsWith('/auth')) {
+  if (pathname.startsWith('/auth') || (pathname.match(/^\/[a-z]{2}\/auth/) && locales.some(locale => pathname.startsWith(`/${locale}/auth`)))) {
     return await handleAuthRoutes(request)
   }
   
@@ -227,13 +276,11 @@ async function checkCSRFToken(request: NextRequest): Promise<boolean> {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public (public files)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|public|robots.txt|sitemap.xml).*)',
+    // Enable internationalization on all paths
+    '/',
+    // Internationalization for localized paths
+    '/(hi|en)/:path*',
+    // Skip API routes and static files but include everything else
+    '/((?!_next/static|_next/image|favicon.ico|public|robots.txt|sitemap.xml|sw.js|manifest.json).*)',
   ],
 }
