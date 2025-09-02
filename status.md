@@ -105,6 +105,7 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 |------|--------|------------|-------|-----|
 | Admin panel requires authentication setup | Low | Authentication system already implemented | Copilot | Resolved |
 | Service worker cache strategy complexity | Low | Well-tested implementation with fallbacks | Copilot | Resolved |
+| CI pnpm version conflict resolved | Low | Fixed by removing version from workflow YAML | Copilot | Resolved ✅ |
 
 ## 📅 Upcoming Plan
 **Next 7 days:**
@@ -116,6 +117,14 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 2. Begin PR06 - i18n implementation with next-intl
 
 ## 📝 Changelog
+### 2024-09-02 (PNPM Fix)
+- **CI Fixed:** Resolved pnpm version conflict in GitHub Actions workflow
+- **GitHub Workflow:** Removed `version: 9` specification from pnpm/action-setup@v4
+- **Package Manager:** Now relies solely on package.json `"packageManager": "pnpm@9.0.0"` field
+- **Modern Best Practice:** Following current pnpm workflow recommendations for version management
+- **Testing:** Verified pnpm commands work correctly with packageManager field
+- **CI Compatibility:** Workflow now uses modern pnpm version detection approach
+
 ### 2024-09-02 (PR04 Completion)
 - **Admin Panel Shell Complete:** Full administrative interface foundation implemented
 - **RBAC-Gated Routes:** All admin routes properly protected with role-based access control
