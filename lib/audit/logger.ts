@@ -16,6 +16,9 @@ export type AuditAction =
   | 'APPROVE'
   | 'REJECT'
   | 'MODERATE'
+  | 'UPLOAD_INITIATED'
+  | 'SCAN_COMPLETE'
+  | 'SCAN_FAILED'
 
 export interface AuditLogData {
   actorId: string
@@ -280,4 +283,18 @@ export async function getAuditStats() {
     resourceStats,
     recentActivity,
   }
+}
+
+// Convenience wrapper for common audit logging operations
+export const auditLogger = {
+  async log(actorId: string, action: AuditAction, resource: string, resourceId: string, diff?: Record<string, any>) {
+    return createAuditLog({ actorId, action, resource, resourceId, diff })
+  },
+  
+  create: auditCreate,
+  update: auditUpdate,
+  delete: auditDelete,
+  roleAssignment: auditRoleAssignment,
+  auth: auditAuth,
+  moderation: auditModeration,
 }
