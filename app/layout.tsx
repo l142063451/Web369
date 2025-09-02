@@ -4,8 +4,12 @@ export const metadata = {
   title: 'Ummid Se Hari - Smart Village PWA',
   description: 'Smart, green & transparent village PWA for Damday–Chuanala',
   manifest: '/manifest.webmanifest',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
   themeColor: '#16A34A',
-  viewport: 'width=device-width, initial-scale=1',
 }
 
 export default function RootLayout({
