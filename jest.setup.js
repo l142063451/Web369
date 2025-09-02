@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom'
 
-// Mock fetch for Node.js environment
-const { default: fetch } = require('node-fetch')
-global.fetch = fetch
+// Mock fetch for Node.js environment using built-in global fetch if available
+if (!global.fetch) {
+  global.fetch = jest.fn()
+}
 
 // Make jest globals available
 global.describe = global.describe || describe

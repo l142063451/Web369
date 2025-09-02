@@ -7,7 +7,7 @@
 import type { PrismaClient } from '@prisma/client'
 import { prisma } from '@/lib/db'
 import { auditLogger } from '@/lib/auth/audit-logger'
-import { FormSchema, FormFieldDefinition, validateFormData } from './schema'
+import { FormSchema, FormFieldDefinition, validateFormDataFromFields } from './schema'
 
 // Define types since Prisma client may not be generated yet
 export interface Form {
@@ -67,10 +67,11 @@ export interface UpdateFormRequest {
 
 export interface CreateSubmissionRequest {
   formId: string
-  userId?: string
+  userId?: string | null
   data: Record<string, unknown>
   files?: string[]
-  geo?: { lat: number; lng: number; accuracy?: number; address?: string }
+  status?: SubmissionStatus
+  geo?: { lat: number; lng: number; accuracy?: number; address?: string } | null
   metadata?: Record<string, unknown>
 }
 
@@ -129,6 +130,13 @@ export class FormService {
         },
       },
     })
+  }
+
+  /**
+   * Alias for getForm for consistency
+   */
+  async getFormById(id: string): Promise<Form | null> {
+    return this.getForm(id)
   }
 
   /**
@@ -246,9 +254,9 @@ export class FormService {
 
     // Validate form data against schema
     const formSchema = form.schema as FormSchema
-    const validation = validateFormData(formSchema, request.data)
+    const validation = validateFormDataFromFields(request.data, formSchema.fields || [])
     if (!validation.success) {
-      throw new Error(`Validation failed: ${validation.error.message}`)
+      throw new Error(`Validation failed: ${validation.error.issues.map(i => i.message).join(', ')}`)
     }
 
     // Calculate SLA due date
@@ -258,15 +266,17 @@ export class FormService {
     const submission = await this.db.submission.create({
       data: {
         formId: request.formId,
-        userId: request.userId,
-        data: request.data as any,
+        userId: request.userId || null,
+        data: validation.data as any,
         files: request.files || [],
+        status: request.status || 'PENDING',
         geo: request.geo as any,
+        metadata: request.metadata as any,
         slaDue,
         history: [
           {
             timestamp: new Date(),
-            status: 'PENDING',
+            status: request.status || 'PENDING',
             notes: 'Submission created',
             userId: request.userId,
           },
