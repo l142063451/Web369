@@ -1,36 +1,36 @@
-import { describe, beforeEach, it, expect, jest } from '@jest/globals'
+// Using Jest globals available in environment
 
-// Mock Prisma client
-const mockPrisma = {
-  translationKey: {
-    findMany: jest.fn(),
-    findUnique: jest.fn(),
-    create: jest.fn(),
-    delete: jest.fn(),
-    groupBy: jest.fn(),
-  },
-  translationValue: {
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-  },
-}
-
-// Mock audit logger
-const mockCreateAuditLog = jest.fn()
-
-// Mock all dependencies before importing the service
+// Mock all dependencies first
 jest.mock('@/lib/db', () => ({
-  prisma: mockPrisma
+  prisma: {
+    translationKey: {
+      findMany: jest.fn(),
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      delete: jest.fn(),
+      groupBy: jest.fn(),
+    },
+    translationValue: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+    },
+  }
 }))
 
 jest.mock('@/lib/audit/logger', () => ({
-  createAuditLog: mockCreateAuditLog
+  createAuditLog: jest.fn()
 }))
 
-// Now import the service after mocking
+// Import service and get mocks after mocking
 import { TranslationService } from '@/lib/i18n/service'
+import { prisma } from '@/lib/db'
+import { createAuditLog } from '@/lib/audit/logger'
+
+// Type the mocked dependencies
+const mockPrisma = prisma as jest.Mocked<typeof prisma>
+const mockCreateAuditLog = createAuditLog as jest.MockedFunction<typeof createAuditLog>
 
 describe('TranslationService', () => {
   let service: TranslationService
