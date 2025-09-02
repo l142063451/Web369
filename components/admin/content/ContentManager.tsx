@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Plus, Search, Filter, Edit, Eye, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -52,11 +52,7 @@ export function ContentManager({}: ContentManagerProps) {
     slug: '',
   })
 
-  useEffect(() => {
-    loadPages()
-  }, [statusFilter])
-
-  const loadPages = async () => {
+  const loadPages = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -77,7 +73,11 @@ export function ContentManager({}: ContentManagerProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [statusFilter, searchTerm])
+
+  useEffect(() => {
+    loadPages()
+  }, [loadPages])
 
   const createPage = async () => {
     try {

@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Check permissions
-    if (!hasPermission(session.user.id, 'content', 'create')) {
+    if (!(await hasPermission(session.user.id, 'content:create'))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     
@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Check permissions
-    if (!hasPermission(session.user.id, 'content', 'read')) {
+    if (!(await hasPermission(session.user.id, 'content:read'))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     

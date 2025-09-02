@@ -4,11 +4,40 @@
  */
 
 import { z } from 'zod'
-import { PrismaClient, PageStatus, type Page, type Media } from '@prisma/client'
+import { prisma } from '@/lib/db'
 import DOMPurify from 'isomorphic-dompurify'
-import { auditLogger } from '@/lib/auth/audit-logger'
+import { createAuditLog, auditCreate, auditUpdate, auditDelete } from '@/lib/auth/audit-logger'
 
-const prisma = new PrismaClient()
+// Import types - these will be available once Prisma generates
+type PageStatus = 'DRAFT' | 'STAGED' | 'PUBLISHED'
+
+interface Page {
+  id: string
+  slug: string
+  title: string
+  locale: string
+  status: PageStatus
+  blocks: any
+  seo: any
+  version: number
+  createdBy: string
+  updatedBy: string
+  publishedAt?: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface Media {
+  id: string
+  url: string
+  alt?: string
+  caption?: string
+  meta: any
+  scannedAt?: Date
+  isPublic: boolean
+  createdBy: string
+  createdAt: Date
+}
 
 // Content Block Schema
 const BlockSchema = z.object({
@@ -98,16 +127,16 @@ export class ContentService {
         seo: validated.seo || {},
         createdBy,
         updatedBy: createdBy,
-        status: PageStatus.DRAFT,
+        status: 'DRAFT' as PageStatus,
         version: 1,
       },
     })
     
     // Log audit
-    await auditLogger.logPageAction(createdBy, 'CREATE', page.id, {
-      action: 'create_page',
+    await auditCreate(createdBy, 'page', page.id, {
       slug: page.slug,
       title: page.title,
+      status: page.status,
     })
     
     return page
@@ -166,10 +195,10 @@ export class ContentService {
     })
     
     // Log audit with diff
-    await auditLogger.logPageAction(updatedBy, 'UPDATE', pageId, {
-      action: 'update_page',
-      changes: this.calculatePageDiff(currentPage, updatedPage),
-    })
+    await auditUpdate(updatedBy, 'page', pageId, 
+      { title: currentPage.title, status: currentPage.status, blocks: currentPage.blocks },
+      { title: updatedPage.title, status: updatedPage.status, blocks: updatedPage.blocks }
+    )
     
     return updatedPage
   }
@@ -186,7 +215,7 @@ export class ContentService {
       where: {
         slug,
         locale,
-        ...(includeUnpublished ? {} : { status: PageStatus.PUBLISHED }),
+        ...(includeUnpublished ? {} : { status: 'PUBLISHED' as PageStatus }),
       },
     })
   }
@@ -261,10 +290,10 @@ export class ContentService {
     })
     
     // Log audit
-    await auditLogger.logPageAction(deletedBy, 'DELETE', pageId, {
-      action: 'delete_page',
+    await auditDelete(deletedBy, 'page', pageId, {
       slug: page.slug,
       title: page.title,
+      status: page.status,
     })
   }
   
@@ -302,16 +331,17 @@ export class ContentService {
         seo: sourcePage.seo,
         createdBy,
         updatedBy: createdBy,
-        status: PageStatus.DRAFT,
+        status: 'DRAFT' as PageStatus,
         version: 1,
       },
     })
     
     // Log audit
-    await auditLogger.logPageAction(createdBy, 'CREATE', duplicatedPage.id, {
-      action: 'duplicate_page',
-      sourceId: sourcePageId,
+    await auditCreate(createdBy, 'page', duplicatedPage.id, {
       slug: duplicatedPage.slug,
+      title: duplicatedPage.title,
+      sourceId: sourcePageId,
+      duplicated: true,
     })
     
     return duplicatedPage
@@ -419,9 +449,10 @@ export class MediaService {
     })
     
     // Log audit
-    await auditLogger.logMediaAction(data.createdBy, 'CREATE', media.id, {
-      action: 'upload_media',
+    await auditCreate(data.createdBy, 'media', media.id, {
       url: media.url,
+      alt: media.alt,
+      caption: media.caption,
     })
     
     return media

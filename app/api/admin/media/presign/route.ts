@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Check permissions
-    if (!hasPermission(session.user.id, 'media', 'create')) {
+    if (!(await hasPermission(session.user.id, 'media:upload'))) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
     

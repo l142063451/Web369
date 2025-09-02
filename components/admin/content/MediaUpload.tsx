@@ -44,6 +44,69 @@ export function MediaUpload({
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([])
   const [isUploading, setIsUploading] = useState(false)
 
+  const updateFileStatus = useCallback((index: number, status: UploadedFile['status'], progress: number, error?: string) => {
+    setUploadedFiles(prev => prev.map((file, i) => 
+      i === index ? { ...file, status, progress, error } : file
+    ))
+  }, [])
+
+  const uploadFile = useCallback(async (index: number, uploadedFile: UploadedFile) => {
+    const checkAllUploadsComplete = () => {
+      setUploadedFiles(prev => {
+        const completedFiles = prev.filter(f => f.status === 'completed')
+        if (completedFiles.length > 0) {
+          onUploadComplete?.(completedFiles.map(f => ({
+            key: f.key,
+            publicUrl: f.publicUrl,
+          })))
+        }
+        return prev
+      })
+    }
+
+    updateFileStatus(index, 'uploading', 0)
+
+    // Upload to S3
+    const xhr = new XMLHttpRequest()
+    
+    return new Promise<void>((resolve, reject) => {
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const progress = Math.round((e.loaded / e.total) * 100)
+          updateFileStatus(index, 'uploading', progress)
+        }
+      })
+
+      xhr.addEventListener('load', async () => {
+        if (xhr.status === 200) {
+          // Upload successful, now mark as scanning
+          updateFileStatus(index, 'scanning', 100)
+          
+          // In a real implementation, we'd poll for scan results
+          // For now, simulate scan completion after 2 seconds
+          setTimeout(() => {
+            updateFileStatus(index, 'completed', 100)
+            checkAllUploadsComplete()
+          }, 2000)
+          
+          resolve()
+        } else {
+          updateFileStatus(index, 'error', 0, `Upload failed: ${xhr.statusText}`)
+          reject(new Error(`Upload failed: ${xhr.statusText}`))
+        }
+      })
+
+      xhr.addEventListener('error', () => {
+        updateFileStatus(index, 'error', 0, 'Network error')
+        reject(new Error('Network error'))
+      })
+
+      xhr.open('PUT', uploadedFile.uploadUrl)
+      xhr.setRequestHeader('Content-Type', uploadedFile.file.type)
+      xhr.send(uploadedFile.file)
+    })
+  }, [])
+
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (uploadedFiles.length + acceptedFiles.length > maxFiles) {
       alert(`Maximum ${maxFiles} files allowed`)
@@ -112,70 +175,7 @@ export function MediaUpload({
     }
 
     setIsUploading(false)
-  }, [uploadedFiles.length, maxFiles])
-
-  const uploadFile = async (index: number, uploadedFile: UploadedFile) => {
-    updateFileStatus(index, 'uploading', 0)
-
-    // Upload to S3
-    const xhr = new XMLHttpRequest()
-    
-    return new Promise<void>((resolve, reject) => {
-      xhr.upload.addEventListener('progress', (e) => {
-        if (e.lengthComputable) {
-          const progress = (e.loaded / e.total) * 100
-          updateFileStatus(index, 'uploading', progress)
-        }
-      })
-
-      xhr.addEventListener('load', async () => {
-        if (xhr.status === 200) {
-          updateFileStatus(index, 'scanning', 100)
-          
-          // Simulate ClamAV scanning (in real implementation, this would be a webhook/polling)
-          setTimeout(() => {
-            updateFileStatus(index, 'completed', 100)
-            checkAllUploadsComplete()
-          }, 2000)
-          
-          resolve()
-        } else {
-          reject(new Error(`Upload failed with status: ${xhr.status}`))
-        }
-      })
-
-      xhr.addEventListener('error', () => {
-        reject(new Error('Upload failed'))
-      })
-
-      xhr.open('PUT', uploadedFile.uploadUrl)
-      xhr.setRequestHeader('Content-Type', uploadedFile.file.type)
-      xhr.send(uploadedFile.file)
-    })
-  }
-
-  const updateFileStatus = (
-    index: number, 
-    status: UploadedFile['status'], 
-    progress: number, 
-    error?: string
-  ) => {
-    setUploadedFiles(prev => prev.map((file, i) => 
-      i === index 
-        ? { ...file, status, progress, error }
-        : file
-    ))
-  }
-
-  const checkAllUploadsComplete = () => {
-    const completedFiles = uploadedFiles.filter(f => f.status === 'completed')
-    if (completedFiles.length > 0) {
-      onUploadComplete?.(completedFiles.map(f => ({
-        key: f.key,
-        publicUrl: f.publicUrl,
-      })))
-    }
-  }
+  }, [uploadedFiles.length, maxFiles, uploadFile, updateFileStatus])
 
   const removeFile = (index: number) => {
     setUploadedFiles(prev => prev.filter((_, i) => i !== index))

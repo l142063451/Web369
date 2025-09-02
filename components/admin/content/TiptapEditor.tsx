@@ -9,7 +9,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
-import Table from '@tiptap/extension-table'
+import { Table } from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
 import TableCell from '@tiptap/extension-table-cell'
@@ -20,8 +20,8 @@ import {
   Heading1, 
   Heading2, 
   Heading3,
-  BulletList, 
-  OrderedList,
+  List, 
+  ListOrdered,
   Quote,
   Code,
   Link as LinkIcon,
@@ -206,13 +206,13 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               active={editor.isActive('bulletList')}
             >
-              <BulletList className="h-4 w-4" />
+              <List className="h-4 w-4" />
             </ToolbarButton>
             <ToolbarButton
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               active={editor.isActive('orderedList')}
             >
-              <OrderedList className="h-4 w-4" />
+              <ListOrdered className="h-4 w-4" />
             </ToolbarButton>
             <ToolbarButton
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
