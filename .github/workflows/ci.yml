@@ -65,17 +65,11 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app
           REDIS_URL: redis://localhost:6379
           
-      - name: Update status.md timestamp
-        if: success() && github.ref == 'refs/heads/main'
+      - name: Update status.md on success
+        if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
         run: |
-          # Update the last updated timestamp in status.md
-          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
-          sed -i "s/\*\*Last Updated:\*\* [0-9-]* [0-9:]* UTC/\*\*Last Updated:\*\* $TIMESTAMP/g" status.md
-          
-          # Update CI health status based on build results
-          sed -i 's/- \*\*Lint:\*\* .*/- \*\*Lint:\*\* ✅ Passes/' status.md
-          sed -i 's/- \*\*Typecheck:\*\* .*/- \*\*Typecheck:\*\* ✅ Passes/' status.md  
-          sed -i 's/- \*\*Build:\*\* .*/- \*\*Build:\*\* ✅ Passes/' status.md
+          # Use the update script for consistency
+          ./scripts/update-status.sh ci-success
           
           # Commit and push if changes were made
           git config user.name "github-actions[bot]"
@@ -83,6 +77,21 @@ jobs:
           if ! git diff --quiet status.md; then
             git add status.md
             git commit -m "chore: update status.md timestamp and CI status [skip ci]"
+            git push
+          fi
+          
+      - name: Update status.md on failure
+        if: failure() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+        run: |
+          # Use the update script for consistency
+          ./scripts/update-status.sh ci-failure
+          
+          # Commit and push if changes were made
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet status.md; then
+            git add status.md
+            git commit -m "chore: update status.md with CI failure [skip ci]"
             git push
           fi
         env:
