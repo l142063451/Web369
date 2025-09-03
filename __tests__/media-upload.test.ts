@@ -7,10 +7,19 @@
 // Mock fetch for Node.js environment
 global.fetch = jest.fn() as jest.MockedFunction<typeof fetch>
 
-// Mock S3 Client
-const mockGetSignedUrl = jest.fn()
+// Mock S3 Client - fix variable scoping issue
 jest.mock('@aws-sdk/s3-request-presigner', () => ({
-  getSignedUrl: mockGetSignedUrl,
+  getSignedUrl: jest.fn().mockResolvedValue('https://mock-signed-url.com'),
+}))
+
+jest.mock('@aws-sdk/client-s3', () => ({
+  S3Client: jest.fn().mockImplementation(() => ({
+    send: jest.fn().mockResolvedValue({ 
+      $metadata: { httpStatusCode: 200 } 
+    })
+  })),
+  PutObjectCommand: jest.fn(),
+  GetObjectCommand: jest.fn(),
 }))
 
 // Mock Socket for ClamAV

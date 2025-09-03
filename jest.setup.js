@@ -17,7 +17,7 @@ if (typeof global.fetch === 'undefined') {
 if (typeof global.Request === 'undefined') {
   global.Request = class Request {
     constructor(input, init = {}) {
-      this.url = input
+      this.url = input.toString()
       this.method = init.method || 'GET'
       this.headers = new Headers(init.headers)
       this.body = init.body
