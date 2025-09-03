@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server'
 import { PWARegister } from '@/components/pwa/PWARegister'
+import { FocusProvider, SkipLink } from '@/components/accessibility/FocusManagement'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n'
 import { analytics } from '@/lib/analytics'
@@ -86,8 +87,15 @@ export default async function LocaleLayout({
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <PWARegister />
-          {children}
+          <FocusProvider>
+            {/* Skip to main content link */}
+            <SkipLink href="#main-content">
+              Skip to main content
+            </SkipLink>
+            
+            <PWARegister />
+            {children}
+          </FocusProvider>
         </NextIntlClientProvider>
       </body>
     </html>
