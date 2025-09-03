@@ -150,27 +150,126 @@ async function main() {
       category: 'renewable_energy',
       criteria: {
         and: [
-          { '<=': [{ 'var': 'income' }, 200000] },
-          { '==': [{ 'var': 'has_roof' }, true] },
+          { '<=': [{ 'var': 'annualIncome' }, 200000] },
+          { '>=': [{ 'var': 'age' }, 18] },
+          { 'in': [{ 'var': 'residenceArea' }, ['damday-chuanala', 'gangolihat']] }
         ],
       },
-      docsRequired: ['income_certificate', 'roof_ownership_proof'],
-      processSteps: ['Apply online', 'Document verification', 'Site inspection', 'Approval'],
-      links: ['https://mnre.gov.in'],
+      docsRequired: ['Income Certificate', 'Roof Ownership Proof', 'Aadhar Card', 'Bank Passbook'],
+      processSteps: [
+        'Submit online application with required documents',
+        'Document verification by local office', 
+        'Technical site inspection by authorized engineer',
+        'Financial approval from district collector',
+        'Installation by empanelled vendor',
+        'Final inspection and subsidy disbursement'
+      ],
+      links: ['https://mnre.gov.in', 'https://solarrooftop.gov.in'],
     },
     {
       title: 'Rainwater Harvesting Grant',
       category: 'water_conservation',
       criteria: {
         and: [
-          { '<': [{ 'var': 'roof_area' }, 1000] },
-          { '==': [{ 'var': 'water_scarcity' }, true] },
+          { '>=': [{ 'var': 'age' }, 21] },
+          { 'in': [{ 'var': 'residenceArea' }, ['damday-chuanala', 'gangolihat', 'pithoragarh']] },
+          { '>=': [{ 'var': 'roofArea' }, 100] }
         ],
       },
-      docsRequired: ['property_documents', 'water_bill'],
-      processSteps: ['Submit application', 'Technical assessment', 'Grant approval'],
-      links: ['https://jalshakti.gov.in'],
+      docsRequired: ['Property documents', 'Technical design plan', 'Cost estimate from contractor'],
+      processSteps: [
+        'Submit application with technical design',
+        'Technical assessment by water department',
+        'Grant approval and fund release',
+        'Implementation monitoring',
+        'Final verification and completion certificate'
+      ],
+      links: ['https://jalshakti.gov.in', 'https://cgwb.gov.in'],
     },
+    {
+      title: 'Senior Citizen Welfare Scheme',
+      category: 'social_welfare',
+      criteria: {
+        and: [
+          { '>=': [{ 'var': 'age' }, 60] },
+          { '<': [{ 'var': 'annualIncome' }, 120000] },
+          { 'in': [{ 'var': 'category' }, ['general', 'obc', 'sc', 'st']] }
+        ],
+      },
+      docsRequired: ['Age proof certificate', 'Income certificate', 'Bank account details', 'Medical fitness certificate'],
+      processSteps: [
+        'Fill application form at panchayat office',
+        'Submit required documents',
+        'Medical checkup at designated center', 
+        'Application review by welfare committee',
+        'Monthly pension activation'
+      ],
+      links: ['https://nsap.nic.in'],
+    },
+    {
+      title: 'Women Entrepreneur Development Program',
+      category: 'economic_development',
+      criteria: {
+        and: [
+          { '>=': [{ 'var': 'age' }, 18] },
+          { '<=': [{ 'var': 'age' }, 45] },
+          { '==': [{ 'var': 'gender' }, 'female'] },
+          { 'in': [{ 'var': 'residenceArea' }, ['damday-chuanala', 'gangolihat']] }
+        ],
+      },
+      docsRequired: ['Business plan', 'Educational certificates', 'Experience certificate', 'Project cost estimate'],
+      processSteps: [
+        'Attend awareness session',
+        'Prepare detailed business plan',
+        'Submit application with documents',
+        'Interview by selection committee',
+        'Training program participation',
+        'Loan approval and disbursal'
+      ],
+      links: ['https://msme.gov.in', 'https://mudra.org.in'],
+    },
+    {
+      title: 'Skill Development Training Scheme',
+      category: 'education_training',
+      criteria: {
+        and: [
+          { '>=': [{ 'var': 'age' }, 16] },
+          { '<=': [{ 'var': 'age' }, 35] },
+          { 'in': [{ 'var': 'educationLevel' }, ['10th', '12th', 'graduate', 'below_10th']] }
+        ],
+      },
+      docsRequired: ['Educational certificates', 'Age proof', 'Caste certificate (if applicable)', 'Employment exchange registration'],
+      processSteps: [
+        'Registration at skill development center',
+        'Counseling and course selection',
+        'Training program enrollment',
+        '3-6 months skill training',
+        'Assessment and certification',
+        'Job placement assistance'
+      ],
+      links: ['https://pmkvyofficial.org', 'https://skillindia.gov.in'],
+    },
+    {
+      title: 'Organic Farming Support Scheme',
+      category: 'agriculture',
+      criteria: {
+        and: [
+          { '>=': [{ 'var': 'age' }, 18] },
+          { '>=': [{ 'var': 'landArea' }, 0.5] },
+          { '==': [{ 'var': 'occupation' }, 'farmer'] }
+        ],
+      },
+      docsRequired: ['Land ownership documents', 'Farmer registration certificate', 'Soil health card', 'Bank account details'],
+      processSteps: [
+        'Register as organic farmer',
+        'Attend training on organic practices',
+        'Submit land conversion plan',
+        'Implementation with monitoring',
+        'Organic certification process',
+        'Marketing support and premium pricing'
+      ],
+      links: ['https://pgsindia-ncof.gov.in', 'https://agricoop.gov.in'],
+    }
   ]
   
   for (const scheme of sampleSchemes) {

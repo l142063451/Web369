@@ -14,6 +14,11 @@ jest.mock('@/lib/forms/service')
 jest.mock('@/lib/security/turnstile')
 jest.mock('@/lib/auth/audit-logger')
 
+// Mock rate limiting - should always pass in tests
+jest.mock('@/lib/security/rate-limit-enhanced', () => ({
+  checkRateLimit: jest.fn(() => true), // Always pass rate limit
+}))
+
 const mockFormService = formService as jest.Mocked<typeof formService>
 const mockVerifyTurnstile = verifyTurnstile as jest.MockedFunction<typeof verifyTurnstile>
 const mockAuditLogger = auditLogger as jest.Mocked<typeof auditLogger>
@@ -69,6 +74,7 @@ describe('Form Submission API', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'CF-Connecting-IP': '192.168.1.100', // Use Cloudflare header
         },
         body: JSON.stringify({
           data: { name: 'John Doe' },
@@ -85,7 +91,7 @@ describe('Form Submission API', () => {
       expect(result.data.status).toBe('PENDING')
 
       expect(mockFormService.getForm).toHaveBeenCalledWith('test-form-id')
-      expect(mockVerifyTurnstile).toHaveBeenCalledWith('valid-token', undefined)
+      expect(mockVerifyTurnstile).toHaveBeenCalledWith('valid-token', 'unknown')
       expect(mockFormService.createSubmission).toHaveBeenCalledWith(
         expect.objectContaining({
           formId: 'test-form-id',
@@ -293,6 +299,7 @@ describe('Form Submission API', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Real-IP': '192.168.2.100', // Use different IP to avoid rate limit
         },
         body: JSON.stringify({
           data: { name: 'John Doe' },

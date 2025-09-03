@@ -23,6 +23,51 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <h3 className="text-xl font-semibold text-green-700 mb-3">
+              Government Schemes
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Explore available government schemes and check your eligibility.
+            </p>
+            <a 
+              href="/schemes" 
+              className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            >
+              View Schemes
+            </a>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <h3 className="text-xl font-semibold text-green-700 mb-3">
+              Citizen Services
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Submit complaints, RTI requests, and access essential village services.
+            </p>
+            <a 
+              href="/services" 
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            >
+              View Services
+            </a>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+            <h3 className="text-xl font-semibold text-green-700 mb-3">
+              Directory & Economy
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Find local businesses, SHGs, job opportunities, and training programs.
+            </p>
+            <a 
+              href="/directory" 
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            >
+              Browse Directory
+            </a>
+          </div>
+
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold text-green-700 mb-3">
               Governance & Transparency
@@ -43,10 +88,19 @@ export default function HomePage() {
 
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold text-green-700 mb-3">
-              Citizen Services
+              Projects & Budgets
             </h3>
             <p className="text-gray-600">
-              Submit complaints, RTI requests, and access essential village services.
+              View ongoing projects, budget allocations, and track progress with maps.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold text-green-700 mb-3">
+              Forms & Applications
+            </h3>
+            <p className="text-gray-600">
+              Access dynamic forms for various applications and track submissions.
             </p>
           </div>
         </div>

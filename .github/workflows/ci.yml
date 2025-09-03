@@ -65,6 +65,34 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app
           REDIS_URL: redis://localhost:6379
           
+      - name: Update status.md with CI results
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+        run: |
+          # Set git configuration
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Use the enhanced automation script
+          chmod +x ./scripts/update-status.sh ./scripts/git-status-ops.sh
+          
+          # Update status based on job result
+          if [ "${{ job.status }}" = "success" ]; then
+            ./scripts/update-status.sh ci-success
+          else
+            ./scripts/update-status.sh ci-failure
+          fi
+          
+          # Commit and push if changes were made  
+          if ! git diff --quiet status.md; then
+            git add status.md
+            git commit -m "chore(ci): auto-update status.md - $(date -u '+%Y-%m-%d %H:%M UTC') [skip ci]"
+            git push
+          else
+            echo "No changes to status.md"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         if: always()

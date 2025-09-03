@@ -48,7 +48,7 @@ export interface FormFieldDefinition {
   fileConstraints?: {
     maxSize: number // in bytes
     allowedTypes: string[] // MIME types
-    multiple: boolean
+    maxFiles: number // maximum number of files
   }
 }
 
@@ -308,7 +308,7 @@ export function getDefaultFormSchema(type: 'complaint' | 'suggestion' | 'rti'): 
             fileConstraints: {
               maxSize: 5 * 1024 * 1024, // 5MB
               allowedTypes: ['image/jpeg', 'image/png', 'application/pdf'],
-              multiple: true
+              maxFiles: 5
             }
           }
         ],

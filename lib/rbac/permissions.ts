@@ -33,6 +33,12 @@ export const PERMISSIONS = {
   'projects:delete': 'Delete projects',
   'projects:publish': 'Publish projects',
   
+  // Directory Management
+  'directory:read': 'View directory entries',
+  'directory:write': 'Create/edit directory entries',
+  'directory:delete': 'Delete directory entries',
+  'directory:approve': 'Approve directory entries',
+  
   // User Management
   'users:read': 'View users',
   'users:create': 'Create users',
@@ -48,6 +54,12 @@ export const PERMISSIONS = {
   'system:analytics': 'View analytics',
   'system:audit': 'View audit logs',
   'system:backup': 'Manage backups',
+  
+  // Notifications Management
+  'notifications:read': 'View notifications',
+  'notifications:write': 'Create and send notifications',
+  'notifications:template': 'Manage notification templates',
+  'notifications:test': 'Send test notifications',
   
   // Moderation
   'moderate:content': 'Moderate content',
@@ -80,6 +92,8 @@ export const DEFAULT_ROLES = {
     'projects:read',
     'projects:create',
     'projects:edit',
+    'directory:read',
+    'directory:write',
     'system:translations',
     'moderate:content',
     'admin:access',
@@ -91,6 +105,8 @@ export const DEFAULT_ROLES = {
     'submissions:resolve',
     'projects:read',
     'projects:publish',
+    'directory:read',
+    'directory:approve',
     'moderate:content',
     'moderate:comments',
     'moderate:directory',

@@ -552,3 +552,141 @@ export class FormService {
 
 // Export singleton instance
 export const formService = new FormService()
+
+// Export convenience functions that use the default instance
+export async function createForm(request: CreateFormRequest): Promise<Form> {
+  return formService.createForm(request)
+}
+
+export async function getForm(id: string): Promise<Form | null> {
+  return formService.getForm(id)
+}
+
+export async function getForms(options?: Parameters<FormService['getForms']>[0]) {
+  return formService.getForms(options)
+}
+
+export async function createSubmission(request: CreateSubmissionRequest): Promise<Submission> {
+  return formService.createSubmission(request)
+}
+
+export async function getSubmission(id: string): Promise<Submission | null> {
+  return formService.getSubmission(id)
+}
+
+export async function updateSubmission(
+  id: string,
+  request: UpdateSubmissionRequest,
+  updatedBy: string
+): Promise<Submission> {
+  return formService.updateSubmission(id, request, updatedBy)
+}
+
+export async function getSubmissions(options?: Parameters<FormService['getSubmissions']>[0]) {
+  return formService.getSubmissions(options)
+}
+
+// New function for PR08 - Get user's submissions
+export async function getUserSubmissions(
+  userId: string,
+  options: {
+    page?: number
+    limit?: number
+    status?: string | null
+    serviceType?: string | null
+  } = {}
+): Promise<Submission[]> {
+  try {
+    // In a real app, this would query the database
+    // For now, return mock data based on the user
+    const { page = 1, limit = 10, status, serviceType } = options
+    
+    // Generate some mock submissions for demo
+    const mockSubmissions: Submission[] = [
+      {
+        id: 'sub_1',
+        formId: 'service-complaint',
+        userId,
+        data: {
+          title: 'Street Light Not Working',
+          description: 'The street light on Main Road has been out for 3 days',
+          category: 'infrastructure',
+          priority: 'medium',
+          serviceType: 'complaint'
+        },
+        files: [],
+        status: 'IN_PROGRESS',
+        assignedTo: null,
+        geo: null,
+        history: [],
+        slaDue: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        updatedAt: new Date()
+      },
+      {
+        id: 'sub_2',
+        formId: 'service-water-tanker',
+        userId,
+        data: {
+          title: 'Water Tanker Request',
+          delivery_address: '123 Gandhi Road, Village Center',
+          water_quantity: '2000',
+          urgency: 'urgent',
+          reason: 'no_supply',
+          serviceType: 'water-tanker'
+        },
+        files: [],
+        status: 'RESOLVED',
+        assignedTo: null,
+        geo: null,
+        history: [],
+        slaDue: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        updatedAt: new Date()
+      },
+      {
+        id: 'sub_3',
+        formId: 'service-certificate',
+        userId,
+        data: {
+          title: 'Birth Certificate Request',
+          certificate_type: 'birth',
+          applicant_name: 'John Doe',
+          purpose: 'School admission',
+          serviceType: 'certificate'
+        },
+        files: [],
+        status: 'PENDING',
+        assignedTo: null,
+        geo: null,
+        history: [],
+        slaDue: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // 12 days from now
+        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        updatedAt: new Date()
+      }
+    ]
+    
+    // Filter by status if provided
+    let filtered = mockSubmissions
+    if (status) {
+      filtered = filtered.filter(sub => sub.status === status)
+    }
+    
+    // Filter by service type if provided
+    if (serviceType) {
+      filtered = filtered.filter(sub => 
+        sub.data?.serviceType === serviceType || sub.formId.includes(serviceType)
+      )
+    }
+    
+    // Pagination
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    
+    return filtered.slice(startIndex, endIndex)
+    
+  } catch (error) {
+    console.error('Error fetching user submissions:', error)
+    throw new Error('Failed to fetch submissions')
+  }
+}

@@ -271,7 +271,7 @@ export default async function AdminFormsPage() {
 
   // Fetch real forms data
   const formsResult = await formService.getForms({ limit: 50 })
-  const realForms = formsResult.forms.map(form => ({
+  const realForms = formsResult.forms.map((form: any) => ({
     id: form.id,
     name: form.name,
     category: (form.schema as any)?.settings?.category || 'general',

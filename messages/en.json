@@ -108,5 +108,237 @@
     "updateAvailable": "App update available",
     "updateReady": "Update ready to install",
     "refresh": "Refresh"
+  },
+  "services": {
+    "title": "Government Services",
+    "subtitle": "Access various government services online. Submit requests, track status, and get updates.",
+    "processing_time": "Processing Time",
+    "documents_required": "Documents Required",
+    "apply_now": "Apply Now",
+    "days_single": "1 day",
+    "days_multiple": "{days} days",
+    "help": {
+      "title": "Need Help?",
+      "how_to_apply": "How to Apply",
+      "step1": "Select the service you need",
+      "step2": "Fill out the application form",
+      "step3": "Upload required documents",
+      "step4": "Submit and track your request",
+      "contact": "Contact Support",
+      "phone": "Phone: +91-XXXX-XXXXXX",
+      "email": "Email: support@example.com",
+      "office_hours": "Office Hours: 9 AM - 5 PM"
+    }
+  },
+  "my-requests": {
+    "title": "My Requests",
+    "subtitle": "Track all your service requests in one place",
+    "new_request": "New Request",
+    "filter_by_service": "Filter by Service",
+    "filter_by_status": "Filter by Status",
+    "all_services": "All Services",
+    "all_statuses": "All Statuses",
+    "loading": "Loading requests...",
+    "no_requests": "No Requests Found",
+    "no_requests_message": "You haven't submitted any service requests yet.",
+    "no_requests_filtered": "No requests found matching your filters.",
+    "submit_first_request": "Submit Your First Request",
+    "auth_required": "Authentication Required",
+    "auth_message": "Please sign in to view your service requests.",
+    "sign_in": "Sign In",
+    "status": "Status",
+    "submitted": "Submitted",
+    "due_date": "Due Date",
+    "view_details": "View Details",
+    "request_id": "Request ID",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In Progress", 
+      "resolved": "Resolved",
+      "rejected": "Rejected"
+    }
+  },
+  "schemes": {
+    "title": "Government Schemes & Benefits",
+    "subtitle": "Explore government schemes and check your eligibility",
+    "search_placeholder": "Search schemes...",
+    "filter_by_category": "Filter by category",
+    "all_categories": "All Categories",
+    "required_documents": "Required Documents",
+    "application_process": "Application Process",
+    "useful_links": "Useful Links",
+    "view_details": "View Details",
+    "check_eligibility": "Check Eligibility",
+    "no_schemes_found": "No schemes found",
+    "try_different_search": "Try adjusting your search or filter criteria",
+    "back_to_schemes": "Back to Schemes",
+    "scheme_not_found": "Scheme Not Found",
+    "scheme_not_found_description": "The scheme you are looking for does not exist or has been removed.",
+    "back_to_scheme": "Back to Scheme",
+    "eligibility_result": "Eligibility Result",
+    "eligible": "You are eligible!",
+    "not_eligible": "You are not eligible",
+    "next_steps": "Next Steps",
+    "apply_now": "Apply Now",
+    "check_again": "Check Again",
+    "eligibility_questions": "Eligibility Questions",
+    "answer_questions_description": "Please answer the following questions to check your eligibility",
+    "age": "Age",
+    "enter_age": "Enter your age",
+    "annual_income": "Annual Income (₹)",
+    "enter_income": "Enter your annual income",
+    "category": "Category",
+    "select_category": "Select your category",
+    "residence_area": "Residence Area",
+    "select_residence": "Select your residence area",
+    "privacy_note": "Your information is only used to check eligibility and is not stored permanently.",
+    "checking": "Checking...",
+    "cancel": "Cancel",
+    "start_eligibility_check": "Start Eligibility Check",
+    "eligibility_description": "Answer a few questions to see if you qualify for this scheme",
+    "quick_info": "Quick Information",
+    "documents_required": "Documents Required",
+    "process_steps": "Process Steps",
+    "need_help": "Need Help?",
+    "help_description": "Contact our support team if you need assistance with your application.",
+    "contact_support": "Contact Support"
+  },
+  "news": {
+    "title": "News & Updates",
+    "subtitle": "Stay updated with the latest happenings in our village",
+    "no_articles": "No news articles found",
+    "no_articles_description": "Check back later for updates and announcements.",
+    "read_more": "Read More",
+    "share": "Share",
+    "published_on": "Published on",
+    "by": "by",
+    "tags": "Tags",
+    "related_articles": "Related Articles",
+    "search_placeholder": "Search news...",
+    "filter_by_tag": "Filter by tag",
+    "all_tags": "All Tags",
+    "featured": "Featured",
+    "recent": "Recent",
+    "archive": "Archive"
+  },
+  "events": {
+    "title": "Events & Calendar",
+    "subtitle": "Join our community events, meetings, and celebrations",
+    "no_events": "No events found",
+    "no_events_description": "Check back later for upcoming events and activities.",
+    "upcoming": "Upcoming",
+    "today": "Today",
+    "past": "Past",
+    "location": "Location",
+    "date_time": "Date & Time",
+    "duration": "Duration",
+    "rsvp": "RSVP",
+    "rsvp_required": "RSVP Required",
+    "rsvp_optional": "RSVP Optional",
+    "spots_left": "spots left",
+    "event_full": "Event Full",
+    "register": "Register",
+    "registered": "Registered",
+    "registration_closed": "Registration Closed",
+    "add_to_calendar": "Add to Calendar",
+    "download_ics": "Download Calendar File",
+    "share_event": "Share Event",
+    "event_details": "Event Details",
+    "attendees": "Attendees",
+    "organizer": "Organizer",
+    "rsvp_form": {
+      "title": "Event Registration",
+      "name": "Full Name",
+      "name_required": "Name is required",
+      "email": "Email Address", 
+      "email_required": "Email is required",
+      "phone": "Phone Number",
+      "notes": "Additional Notes",
+      "submit": "Register for Event",
+      "cancel": "Cancel",
+      "success": "Registration successful!",
+      "success_description": "You'll receive a confirmation email shortly.",
+      "already_registered": "You have already registered for this event",
+      "error": "Registration failed. Please try again."
+    },
+    "stats": {
+      "upcoming_events": "Upcoming Events",
+      "total_events": "Total Events",
+      "total_rsvps": "Total RSVPs",
+      "confirmed": "Confirmed"
+    }
+  },
+  "notices": {
+    "title": "Notices & Announcements", 
+    "subtitle": "Official notices, tenders, public orders, and announcements",
+    "no_notices": "No notices found",
+    "no_notices_description": "Check back later for new notices and announcements.",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "deadline": "Deadline",
+    "expires": "Expires",
+    "expired": "Expired",
+    "active": "Active",
+    "with_attachments": "With Attachments",
+    "download": "Download",
+    "view_pdf": "View PDF",
+    "download_pdf": "Download PDF", 
+    "pdf_preview": "PDF Preview",
+    "pdf_not_available": "PDF Preview Not Available",
+    "pdf_error": "The PDF cannot be displayed in the browser.",
+    "search_placeholder": "Search notices...",
+    "filter_active": "Active Only",
+    "filter_expired": "Include Expired",
+    "categories": {
+      "tenders": "Tenders",
+      "orders": "Orders",
+      "announcements": "Announcements",
+      "public_notices": "Public Notices",
+      "circulars": "Circulars",
+      "schemes": "Schemes"
+    },
+    "stats": {
+      "active": "Active Notices",
+      "total": "Total Notices", 
+      "with_deadlines": "With Deadlines",
+      "expired": "Expired"
+    }
+  },
+  "openData": {
+    "title": "Open Data Portal",
+    "description": "Transparent access to village data promoting accountability and community engagement",
+    "features": {
+      "comprehensive": {
+        "title": "Comprehensive Data",
+        "description": "Complete datasets covering projects, schemes, events, and more"
+      },
+      "accessible": {
+        "title": "Easy Access", 
+        "description": "Download data in multiple formats (CSV, JSON) for analysis"
+      },
+      "transparent": {
+        "title": "Full Transparency",
+        "description": "Open access to government data for public accountability"
+      },
+      "secure": {
+        "title": "Privacy Protected",
+        "description": "Data is anonymized and privacy-compliant"
+      }
+    },
+    "usage": {
+      "title": "Usage Guidelines",
+      "license": {
+        "title": "Open License",
+        "description": "All data is available under Open Government License (OGL). Free to use for any purpose with attribution."
+      },
+      "formats": {
+        "title": "Data Formats", 
+        "description": "Data is available in CSV format for analysis and JSON format for applications."
+      },
+      "updates": {
+        "title": "Regular Updates",
+        "description": "Datasets are updated regularly according to their individual schedules (daily, weekly, monthly)."
+      }
+    }
   }
 }
