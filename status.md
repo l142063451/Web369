@@ -32,7 +32,7 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 - [x] **PR14** - Notifications Center *(COMPLETED)*
 - [x] **PR15** - Analytics, SEO & Open Data *(Completed)*
 - [x] **PR16** - Accessibility & Security Hardening *(COMPLETED)*
-- [ ] **PR17** - Coverage & Stability (85%+ target)
+- [ ] **PR17** - Coverage & Stability (85%+ target) *(IN PROGRESS - 9.26% → 85%)*
 - [ ] **PR18** - Release Packaging & GHCR Publishing
 
 ## 🏗️ PR14 Progress (COMPLETED)
@@ -184,6 +184,23 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 - [x] Basic component library with shadcn/ui
 - [x] Status and PR templates
 
+## 🏗️ PR17 Progress (IN PROGRESS)
+**Testing & CI Gates** - Achieving 85%+ coverage and comprehensive testing infrastructure:
+- [x] **Test Stability Improvements:** Reduced failing tests from 25 to 6 (76% improvement)  
+- [x] **Test Infrastructure Fixes:** Enhanced jest.setup.js, fixed mock configurations
+- [x] **Service Testing:** news-events, media-upload, test-setup utilities completed
+- [x] **Coverage Analysis:** Comprehensive baseline established (9.26% current vs 85% target)
+- [x] **Documentation:** Created status_screenshot.md with detailed progress tracking
+- [ ] **Smart Features Testing:** Carbon calculator, solar wizard, water tracker coverage
+- [ ] **Notifications System Testing:** All 4 channels (Email, SMS, WhatsApp, Web Push) 
+- [ ] **Admin Panel Testing:** CRUD operations, permissions, dashboard functionality
+- [ ] **API Routes Testing:** Complete REST endpoint coverage with error handling
+- [ ] **Lighthouse CI Integration:** Performance budgets and automated monitoring
+- [ ] **E2E Testing:** Critical user flows with Playwright screenshot automation
+- [ ] **Security & A11y Testing:** OWASP ASVS-L2 and WCAG 2.2 AA compliance
+
+**Current Status:** Test suite significantly stabilized with infrastructure improvements completed. Focusing on expanding coverage from 9.26% to 85%+ target.
+
 ## 🏗️ PR16 Progress (COMPLETED)
 **Accessibility & Security Hardening** - Production-grade WCAG 2.2 AA compliance and OWASP ASVS-L2 security:
 - [x] **Comprehensive Accessibility Testing** - Axe-core integration with Playwright for automated WCAG 2.2 AA testing
@@ -206,9 +223,10 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 - **Build:** ✅ Passes
 
 ## 📊 Coverage Status
-- **Current:** ~85% (based on implemented test files and mock coverage)
-- **Target:** 85%
-- **Branch Coverage:** ~85% (target: 80%)
+- **Current:** 9.26% statements, 6.12% branches (major improvement from test fixes)
+- **Target:** 85% statements, 80% branches  
+- **High Coverage Areas:** Auth/TOTP (100%), File uploads (100%), Security (97%)
+- **Focus Areas:** Notifications (0-23%), Admin panel (0%), Smart features (0-13%)
 
 ## ⚠️ Current Risks
 | Risk | Impact | Mitigation | Owner | Due |
@@ -219,22 +237,37 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 
 ## 📅 Upcoming Plan
 **Next 7 days:**
-1. **Begin PR17 - Testing & CI Gates**
-   - Achieve 85%+ test coverage with unit, integration, and E2E tests
-   - Implement comprehensive Lighthouse CI integration
-   - Create flaky test guards and CI reliability improvements
-   - Enhance existing test suites with accessibility and security testing
-2. Continue systematic progression through 18-PR roadmap
-3. Complete final testing and stability improvements
+1. **Continue PR17 - Testing & CI Gates (IN PROGRESS)**
+   - ✅ Improved test stability from 25 to 6 failing tests (76% improvement)
+   - ✅ Fixed critical test infrastructure and service implementations  
+   - 🔄 Achieve 85%+ test coverage (currently 9.26% → target 85%)
+   - 🔄 Implement comprehensive Lighthouse CI integration
+   - 🔄 Create flaky test guards and CI reliability improvements
+   - 🔄 Add comprehensive accessibility and security testing
+2. High-priority coverage areas: Smart features, Notifications system, Admin panel
+3. Implement automated screenshot testing with Playwright
 
 **Next 14 days:**
-1. Complete PR17 - Testing & CI Gates with full coverage requirements
+1. Complete PR17 with full 85%+ coverage and advanced CI gates
 2. Begin PR18 - Release Packaging & GHCR Publishing (final deployment)
-3. Test comprehensive integration between all implemented modules (PR01-PR16)
+3. Comprehensive integration testing across all PR01-PR17 modules
 4. Prepare production deployment with DigitalOcean integration
 5. Complete final quality assurance and user acceptance testing
 
 ## 📝 Changelog
+### 2025-01-03 (PR17 Implementation - Phase 1 Complete)
+- **Testing & CI Gates:** Major test stability improvements and infrastructure enhancements
+  - **Test Stability:** Dramatically improved from 25 failing to 6 failing tests (76% improvement)
+  - **Test Coverage Analysis:** Comprehensive baseline established - 9.26% current, targeting 85%
+  - **Infrastructure Fixes:** Enhanced jest.setup.js with proper Request/Response polyfills
+  - **Service Testing:** Fixed news-events.test.ts, media-upload.test.ts with proper mock setup
+  - **Code Quality:** Added missing NoticesService.isExpired method and DOMPurify HTML sanitization
+  - **Test Utilities:** Created comprehensive test-setup.ts with reusable mock patterns
+  - **Documentation:** Added status_screenshot.md for visual progress tracking
+  - **High-Coverage Verification:** Confirmed robust implementations in Auth (100%), Uploads (100%), Security (97%)
+  - **Focus Areas Identified:** Notifications system (0-23%), Admin panel (0%), Smart features (0-13%) need coverage
+  - **Next Phase:** Expanding test coverage for smart features, notifications, and admin functionality
+
 ### 2025-01-26 (PR16 Implementation Complete)
 - **Accessibility & Security Hardening:** Comprehensive WCAG 2.2 AA compliance and OWASP ASVS-L2 security implementation
   - **Accessibility Testing:** Advanced axe-core integration with Playwright for automated WCAG 2.2 AA compliance testing

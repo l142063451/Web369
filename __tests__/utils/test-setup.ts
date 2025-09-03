@@ -231,3 +231,30 @@ export const createPastDate = (daysAgo: number = 7) => {
   date.setDate(date.getDate() - daysAgo)
   return date
 }
+
+// Tests for utility functions
+describe('Test Setup Utilities', () => {
+  describe('createFutureDate', () => {
+    it('should create a date in the future', () => {
+      const futureDate = createFutureDate(7)
+      const now = new Date()
+      expect(futureDate.getTime()).toBeGreaterThan(now.getTime())
+    })
+  })
+
+  describe('createPastDate', () => {
+    it('should create a date in the past', () => {
+      const pastDate = createPastDate(7)
+      const now = new Date()
+      expect(pastDate.getTime()).toBeLessThan(now.getTime())
+    })
+  })
+
+  describe('createMockPrisma', () => {
+    it('should create a comprehensive Prisma mock', () => {
+      const mockPrisma = createMockPrisma()
+      expect(mockPrisma.user.create).toBeDefined()
+      expect(mockPrisma.$connect).toBeDefined()
+    })
+  })
+})

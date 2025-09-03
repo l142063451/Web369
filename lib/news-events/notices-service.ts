@@ -6,6 +6,7 @@
 import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { createAuditLog } from '@/lib/auth/audit-logger'
+import DOMPurify from 'isomorphic-dompurify'
 
 // Type definitions
 export interface Notice {
@@ -68,8 +69,17 @@ export class NoticesService {
   static async create(data: z.infer<typeof CreateNoticeSchema>, userId: string): Promise<Notice> {
     const validated = CreateNoticeSchema.parse(data)
 
+    // Sanitize HTML content
+    const sanitizedData = {
+      ...validated,
+      body: DOMPurify.sanitize(validated.body, {
+        ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote'],
+        ALLOWED_ATTR: []
+      })
+    }
+
     const notice = await prisma.notice.create({
-      data: validated
+      data: sanitizedData
     })
 
     // Create audit log
@@ -373,5 +383,15 @@ export class NoticesService {
    */
   static getNonPDFAttachments(notice: Notice): string[] {
     return notice.attachments.filter(url => !this.isPDFAttachment(url))
+  }
+
+  /**
+   * Check if a notice is expired
+   */
+  static isExpired(notice: { deadline: Date | null }): boolean {
+    if (!notice.deadline) {
+      return false
+    }
+    return notice.deadline < new Date()
   }
 }

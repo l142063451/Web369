@@ -3,7 +3,7 @@
  * PR12 - Comprehensive tests for News/Notices/Events implementation
  */
 
-import { NewsService, EventsService, NoticesService } from '@/lib/news-events'
+import { NewsService, EventsService, NoticesService, RSVPService } from '@/lib/news-events'
 
 // Mock dependencies
 jest.mock('@/lib/db', () => ({
@@ -31,6 +31,7 @@ jest.mock('@/lib/db', () => ({
       update: jest.fn(),
       delete: jest.fn(),
       count: jest.fn(),
+      groupBy: jest.fn(),
     },
     eventRSVP: {
       create: jest.fn(),
@@ -204,6 +205,7 @@ describe('Events Service', () => {
         end: new Date('2024-12-01T12:00:00Z'),
         location: 'Community Center',
         rsvpEnabled: true,
+        attachments: [],
       }
 
       const result = await EventsService.create(eventData, 'user1')
@@ -231,6 +233,7 @@ describe('Events Service', () => {
       }
 
       const { prisma } = require('@/lib/db')
+      prisma.event.findUnique.mockResolvedValue({ id: 'clh5p8w2g0000h8g7n1234567', rsvpEnabled: true })
       prisma.eventRSVP.findFirst.mockResolvedValue(null) // No existing RSVP
       prisma.eventRSVP.create.mockResolvedValue(mockRSVP)
 
@@ -240,11 +243,11 @@ describe('Events Service', () => {
         phone: '1234567890',
       }
 
-      const result = await EventsService.submitRSVP('event1', rsvpData)
+      const result = await RSVPService.create({ eventId: 'clh5p8w2g0000h8g7n1234567', ...rsvpData })
       
       expect(prisma.eventRSVP.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          eventId: 'event1',
+          eventId: 'clh5p8w2g0000h8g7n1234567',
           name: 'John Doe',
           email: 'john@example.com',
           status: 'PENDING'
@@ -255,6 +258,7 @@ describe('Events Service', () => {
 
     it('should prevent duplicate RSVPs', async () => {
       const { prisma } = require('@/lib/db')
+      prisma.event.findUnique.mockResolvedValue({ id: 'clh5p8w2g0000h8g7n1234567', rsvpEnabled: true })
       prisma.eventRSVP.findFirst.mockResolvedValue({ id: 'existing-rsvp' })
 
       const rsvpData = {
@@ -262,8 +266,8 @@ describe('Events Service', () => {
         email: 'john@example.com',
       }
 
-      await expect(EventsService.submitRSVP('event1', rsvpData))
-        .rejects.toThrow('You have already registered for this event')
+      await expect(RSVPService.create({ eventId: 'clh5p8w2g0000h8g7n1234567', ...rsvpData }))
+        .rejects.toThrow('RSVP already exists for this email')
     })
   })
 
@@ -313,7 +317,7 @@ describe('Events Service', () => {
           where: {
             start: { gte: expect.any(Date) }
           },
-          orderBy: { start: 'asc' }
+          orderBy: [{ start: 'asc' }]
         })
       )
       expect(result.events).toEqual(mockEvents)
@@ -346,7 +350,8 @@ describe('Notices Service', () => {
         title: 'Public Notice',
         category: 'General',
         body: 'Important announcement',
-        deadline: new Date('2024-12-31T23:59:59Z'),
+        deadline: new Date('2025-12-31T23:59:59Z'),
+        attachments: [],
       }
 
       const result = await NoticesService.create(noticeData, 'user1')
@@ -365,6 +370,7 @@ describe('Notices Service', () => {
         title: 'Test Notice',
         category: 'General',
         body: '<p>Safe content</p><script>alert("evil")</script>',
+        attachments: [],
       }
 
       await NoticesService.create(noticeData, 'user1')
