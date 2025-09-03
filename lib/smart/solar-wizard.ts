@@ -8,7 +8,7 @@ import {
   monthlySolarDistribution,
   defaultSolarParams 
 } from './formulas'
-import { auditLogger } from '@/lib/audit/logger'
+import { createAuditLog } from '@/lib/audit/logger'
 
 /**
  * Solar Wizard Service
@@ -94,11 +94,11 @@ export class SolarWizardService {
       }
       
       // Audit log the calculation
-      await auditLogger.log({
-        entity: 'SolarCalculation', 
-        entityId: result.id,
+      await createAuditLog({
+        actorId: userId || 'anonymous',
         action: 'CREATE',
-        userId: userId || 'anonymous',
+        resource: 'SolarCalculation',
+        resourceId: result.id,
         metadata: {
           systemCapacity: kWp,
           annualGeneration: adjustedAnnualGeneration,

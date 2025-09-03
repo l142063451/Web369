@@ -12,7 +12,7 @@ export const rwh = (rainfallMm: number, areaM2: number, runoffCoeff: number): nu
   if (rainfallMm < 0 || areaM2 < 0 || runoffCoeff < 0 || runoffCoeff > 1) {
     throw new Error('Invalid RWH parameters')
   }
-  return rainfallMm * areaM2 * runoffCoeff * 0.001
+  return rainfallMm * areaM2 * runoffCoeff
 }
 
 /**
@@ -189,45 +189,48 @@ export const monthlySolarDistribution = (annualGeneration: number): number[] => 
     throw new Error('Invalid annual generation')
   }
   
-  // Typical monthly distribution percentages for India
+  // Typical monthly distribution percentages for India (must sum to 1.0)
   const monthlyPercentages = [
-    0.075, // Jan
-    0.080, // Feb  
-    0.095, // Mar
-    0.100, // Apr
-    0.105, // May
-    0.085, // Jun (monsoon)
-    0.070, // Jul (monsoon)
-    0.075, // Aug (monsoon)
-    0.085, // Sep
-    0.090, // Oct
-    0.085, // Nov
-    0.075  // Dec
+    0.074, // Jan
+    0.078, // Feb  
+    0.092, // Mar
+    0.098, // Apr
+    0.103, // May
+    0.084, // Jun (monsoon)
+    0.072, // Jul (monsoon)
+    0.076, // Aug (monsoon)
+    0.086, // Sep
+    0.091, // Oct
+    0.084, // Nov
+    0.062  // Dec
   ]
+  
+  // Verify percentages sum to 1.0
+  const sum = monthlyPercentages.reduce((a, b) => a + b, 0)
+  if (Math.abs(sum - 1.0) > 0.001) {
+    throw new Error('Monthly percentages must sum to 1.0')
+  }
   
   return monthlyPercentages.map(pct => annualGeneration * pct)
 }
 
 /**
  * Default emission factors for India (kg CO2e per unit)
+ * Flattened structure for easy configuration
  */
 export const defaultEmissionFactors = {
-  electricity: 0.82, // per kWh
-  lpg: 2.98, // per kg
-  transport: {
-    car: 0.171, // per km
-    bike: 0.089, // per km  
-    bus: 0.105, // per km
-    train: 0.041, // per km
-  },
-  waste: {
-    organic: 0.57, // per kg (decomposition)
-    plastic: 6.0, // per kg (production + disposal)
-    paper: 1.29, // per kg
-    metal: 0.5, // per kg
-    glass: 0.2, // per kg
-  },
-  water: 0.298, // per 1000L (treatment + distribution)
+  'electricity': 0.82, // per kWh
+  'lpg': 2.98, // per kg
+  'transport.car': 0.171, // per km
+  'transport.bike': 0.089, // per km  
+  'transport.bus': 0.105, // per km
+  'transport.train': 0.041, // per km
+  'waste.organic': 0.57, // per kg (decomposition)
+  'waste.plastic': 6.0, // per kg (production + disposal)
+  'waste.paper': 1.29, // per kg
+  'waste.metal': 0.5, // per kg
+  'waste.glass': 0.2, // per kg
+  'water': 0.298, // per 1000L (treatment + distribution)
 }
 
 /**

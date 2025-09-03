@@ -14,7 +14,7 @@ import {
   waterEmissions,
   defaultEmissionFactors
 } from './formulas'
-import { auditLogger } from '@/lib/audit/logger'
+import { createAuditLog } from '@/lib/audit/logger'
 
 /**
  * Carbon Calculator Service
@@ -60,14 +60,14 @@ export class CarbonCalculatorService {
       )
       
       const transportEmission = 
-        transportEmissions(input.transport.car, this.emissionFactors['transport.car'] || defaultEmissionFactors.transport.car) +
-        transportEmissions(input.transport.bike, this.emissionFactors['transport.bike'] || defaultEmissionFactors.transport.bike) +
-        transportEmissions(input.transport.bus, this.emissionFactors['transport.bus'] || defaultEmissionFactors.transport.bus)
+        transportEmissions(input.transport.car, this.emissionFactors['transport.car']) +
+        transportEmissions(input.transport.bike, this.emissionFactors['transport.bike']) +
+        transportEmissions(input.transport.bus, this.emissionFactors['transport.bus'])
       
       const wasteEmission =
-        wasteEmissions(input.waste.organic, this.emissionFactors['waste.organic'] || defaultEmissionFactors.waste.organic) +
-        wasteEmissions(input.waste.plastic, this.emissionFactors['waste.plastic'] || defaultEmissionFactors.waste.plastic) +
-        wasteEmissions(input.waste.paper, this.emissionFactors['waste.paper'] || defaultEmissionFactors.waste.paper)
+        wasteEmissions(input.waste.organic, this.emissionFactors['waste.organic']) +
+        wasteEmissions(input.waste.plastic, this.emissionFactors['waste.plastic']) +
+        wasteEmissions(input.waste.paper, this.emissionFactors['waste.paper'])
       
       const waterEmission = waterEmissions(
         input.water,
@@ -104,11 +104,11 @@ export class CarbonCalculatorService {
       }
       
       // Audit log the calculation
-      await auditLogger.log({
-        entity: 'CarbonCalculation',
-        entityId: result.id,
+      await createAuditLog({
+        actorId: userId || 'anonymous',
         action: 'CREATE',
-        userId: userId || 'anonymous',
+        resource: 'CarbonCalculation',
+        resourceId: result.id,
         metadata: {
           totalEmissions,
           categories: Object.keys(input),
