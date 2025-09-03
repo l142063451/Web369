@@ -5,54 +5,61 @@
 
 // Jest globals are available through jest.setup.js
 
-// Mock Prisma client
-const mockPrisma = {
-  page: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    findFirst: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-    count: jest.fn(),
-  },
-  media: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    count: jest.fn(),
-  },
-}
-
 // Mock the entire db module before importing the service
-jest.mock('@/lib/db', () => ({
-  __esModule: true,
-  prisma: mockPrisma,
-}))
+jest.mock('@/lib/db', () => {
+  const mockPrisma = {
+    page: {
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      findFirst: jest.fn(),
+      findMany: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      count: jest.fn(),
+    },
+    media: {
+      create: jest.fn(),
+      findMany: jest.fn(),
+      update: jest.fn(),
+      count: jest.fn(),
+    },
+  }
+
+  return {
+    __esModule: true,
+    prisma: mockPrisma,
+    canUsePrisma: jest.fn(() => false), // Force mock usage in tests
+  }
+})
 
 // Mock audit logger
-const mockAuditCreate = jest.fn()
-const mockAuditUpdate = jest.fn()
-const mockAuditDelete = jest.fn()
-
 jest.mock('@/lib/auth/audit-logger', () => ({
   createAuditLog: jest.fn(),
-  auditCreate: mockAuditCreate,
-  auditUpdate: mockAuditUpdate,
-  auditDelete: mockAuditDelete,
+  auditCreate: jest.fn(),
+  auditUpdate: jest.fn(),
+  auditDelete: jest.fn(),
 }))
 
 // Mock DOMPurify
-const mockSanitize = jest.fn((html: string) => html)
 jest.mock('isomorphic-dompurify', () => ({
   __esModule: true,
   default: {
-    sanitize: mockSanitize,
+    sanitize: jest.fn((html: string) => html), // Return input unchanged for tests
   },
 }))
 
 // Import after mocks are set up
 import { ContentService, MediaService } from '@/lib/content/service'
+import { prisma } from '@/lib/db'
+import DOMPurify from 'isomorphic-dompurify'
+import * as auditLogger from '@/lib/auth/audit-logger'
+
+// Get the mocked instances for test assertions
+const mockPrisma = prisma as jest.Mocked<typeof prisma>
+const mockSanitize = DOMPurify.sanitize as jest.MockedFunction<typeof DOMPurify.sanitize>
+const mockAuditCreate = auditLogger.auditCreate as jest.MockedFunction<typeof auditLogger.auditCreate>
+const mockAuditUpdate = auditLogger.auditUpdate as jest.MockedFunction<typeof auditLogger.auditUpdate>
+const mockAuditDelete = auditLogger.auditDelete as jest.MockedFunction<typeof auditLogger.auditDelete>
 
 describe('ContentService', () => {
   beforeEach(() => {

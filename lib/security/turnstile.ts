@@ -59,6 +59,18 @@ export async function verifyTurnstile(token: string, ip?: string): Promise<boole
     return true
   } catch (error) {
     console.error('Turnstile verification error:', error)
+    
+    // Re-throw specific errors from verification or API calls
+    if (error instanceof Error) {
+      // If it's already a Turnstile verification or API error, keep it
+      if (error.message.includes('Turnstile verification failed') || 
+          error.message.includes('Turnstile API error') ||
+          error.message.includes('Turnstile token is required')) {
+        throw error
+      }
+    }
+    
+    // For other errors, throw generic message
     throw new Error('Anti-bot verification failed')
   }
 }
