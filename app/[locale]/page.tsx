@@ -89,8 +89,6 @@ export default function HomePage() {
             </p>
           </div>
         </div>
-          </div>
-        </div>
 
         <div className="text-center mt-12">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">

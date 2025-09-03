@@ -82,6 +82,9 @@ model User {
   createdForms    Form[]
   assignedSubmissions Submission[] @relation("AssignedTo")
   directoryEntries DirectoryEntry[]
+  createdNews     News[] @relation("NewsCreator")
+  updatedNews     News[] @relation("NewsUpdater")
+  eventRSVPs      EventRSVP[]
 
   @@map("users")
 }
@@ -302,16 +305,20 @@ model EligibilityRun {
 // ===== EVENTS & NOTICES =====
 
 model Event {
-  id           String    @id @default(cuid())
+  id           String      @id @default(cuid())
   title        String
   start        DateTime
   end          DateTime
   location     String?
-  rsvpEnabled  Boolean   @default(false)
+  rsvpEnabled  Boolean     @default(false)
   description  String?
-  attachments  String[]  @default([])
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  attachments  String[]    @default([])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  rsvps EventRSVP[]
+
+  @@index([start, end])
 }
 
 model Notice {
@@ -325,6 +332,56 @@ model Notice {
   updatedAt   DateTime @updatedAt
 
   @@index([category, deadline])
+}
+
+model News {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  excerpt     String?
+  content     String
+  featuredImage String?
+  tags        String[]    @default([])
+  status      PageStatus @default(DRAFT)
+  publishedAt DateTime?
+  seo         Json        @default("{}")
+  createdBy   String
+  updatedBy   String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  creator User @relation(name: "NewsCreator", fields: [createdBy], references: [id])
+  updater User @relation(name: "NewsUpdater", fields: [updatedBy], references: [id])
+
+  @@index([status, publishedAt])
+  @@index([slug])
+  @@index([tags])
+}
+
+model EventRSVP {
+  id        String     @id @default(cuid())
+  eventId   String
+  userId    String?
+  name      String
+  email     String
+  phone     String?
+  status    RSVPStatus @default(PENDING)
+  notes     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, email])
+  @@index([eventId, status])
+}
+
+enum RSVPStatus {
+  PENDING
+  CONFIRMED
+  DECLINED
+  CANCELLED
 }
 
 // ===== DIRECTORY & ECONOMY =====
