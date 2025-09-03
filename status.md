@@ -1,7 +1,7 @@
 # Ummid Se Hari - Project Status
 
-**Last Updated:** 2025-01-25 16:30:00 UTC  
-**Current Phase:** PR12 *(Ready to begin)*
+**Last Updated:** 2025-01-25 17:45:00 UTC  
+**Current Phase:** PR13 *(Foundation started)*
 **Environment:** Development
 
 ## 🎯 Overview
@@ -27,8 +27,8 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 - [x] **PR09** - Projects & Budgets with Maps
 - [x] **PR10** - Smart & Carbon-Free Features
 - [x] **PR11** - Schemes & Eligibility *(Completed)*
-- [ ] **PR12** - News, Notices & Events
-- [ ] **PR13** - Directory & Economy
+- [x] **PR12** - News, Notices & Events *(COMPLETED)*
+- [ ] **PR13** - Directory & Economy *(IN PROGRESS)*
 - [ ] **PR14** - Notifications Center
 - [ ] **PR15** - Analytics, SEO & Open Data
 - [ ] **PR16** - Accessibility & Security Hardening
