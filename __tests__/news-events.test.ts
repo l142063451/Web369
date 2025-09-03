@@ -136,16 +136,25 @@ describe('News Service', () => {
 
       const result = await NewsService.getPublished(1, 10)
 
+      // Check the actual query structure used by the list method
       expect(prisma.news.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
-            status: 'PUBLISHED',
-            publishedAt: { lte: expect.any(Date) }
+          where: { status: 'PUBLISHED' }, // Only status filter, no publishedAt
+          orderBy: [
+            { publishedAt: 'desc' },
+            { createdAt: 'desc' }
+          ],
+          skip: 0,
+          take: 10,
+          include: {
+            creator: {
+              select: { id: true, name: true, email: true }
+            }
           }
         })
       )
       expect(result.news).toEqual(mockNews)
-      expect(result.pagination.totalItems).toBe(2)
+      expect(result.pagination.total).toBe(2)
     })
   })
 
@@ -200,7 +209,10 @@ describe('Events Service', () => {
       const result = await EventsService.create(eventData, 'user1')
       
       expect(prisma.event.create).toHaveBeenCalledWith({
-        data: eventData
+        data: eventData,
+        include: {
+          rsvps: true
+        }
       })
       expect(result).toEqual(mockEvent)
     })

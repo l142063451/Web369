@@ -332,4 +332,36 @@ export class NewsService {
       limit
     })
   }
+
+  /**
+   * Generate SEO metadata for news article
+   */
+  static generateSEO(article: { 
+    title: string
+    excerpt?: string
+    featuredImage?: string
+    tags?: string[]
+  }) {
+    const siteTitle = 'Ummid Se Hari'
+    const defaultTags = ['Ummid Se Hari', 'village news']
+    
+    return {
+      title: `${article.title} | ${siteTitle}`,
+      description: article.excerpt || article.title,
+      keywords: [...(article.tags || []), ...defaultTags],
+      openGraph: {
+        title: article.title,
+        description: article.excerpt || article.title,
+        images: article.featuredImage ? [article.featuredImage] : [],
+        type: 'article',
+        siteName: siteTitle
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: article.title,
+        description: article.excerpt || article.title,
+        ...(article.featuredImage && { images: [article.featuredImage] })
+      }
+    }
+  }
 }
