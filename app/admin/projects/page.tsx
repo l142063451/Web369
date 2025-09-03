@@ -41,6 +41,12 @@ export default function ProjectsAdminPage() {
             </p>
           </div>
           <div className="flex gap-3">
+            <button 
+              onClick={() => window.open('/api/projects/export?type=projects', '_blank')}
+              className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Export CSV
+            </button>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
               New Project
             </button>
