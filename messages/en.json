@@ -303,5 +303,42 @@
       "with_deadlines": "With Deadlines",
       "expired": "Expired"
     }
+  },
+  "openData": {
+    "title": "Open Data Portal",
+    "description": "Transparent access to village data promoting accountability and community engagement",
+    "features": {
+      "comprehensive": {
+        "title": "Comprehensive Data",
+        "description": "Complete datasets covering projects, schemes, events, and more"
+      },
+      "accessible": {
+        "title": "Easy Access", 
+        "description": "Download data in multiple formats (CSV, JSON) for analysis"
+      },
+      "transparent": {
+        "title": "Full Transparency",
+        "description": "Open access to government data for public accountability"
+      },
+      "secure": {
+        "title": "Privacy Protected",
+        "description": "Data is anonymized and privacy-compliant"
+      }
+    },
+    "usage": {
+      "title": "Usage Guidelines",
+      "license": {
+        "title": "Open License",
+        "description": "All data is available under Open Government License (OGL). Free to use for any purpose with attribution."
+      },
+      "formats": {
+        "title": "Data Formats", 
+        "description": "Data is available in CSV format for analysis and JSON format for applications."
+      },
+      "updates": {
+        "title": "Regular Updates",
+        "description": "Datasets are updated regularly according to their individual schedules (daily, weekly, monthly)."
+      }
+    }
   }
 }
