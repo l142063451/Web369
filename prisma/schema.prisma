@@ -219,6 +219,7 @@ model Project {
   updatedAt   DateTime      @updatedAt
 
   projectMilestones Milestone[]
+  budgetLines      BudgetLine[]
 
   @@index([status, ward])
 }
@@ -230,18 +231,41 @@ enum ProjectStatus {
   CANCELLED
 }
 
+model BudgetLine {
+  id          String      @id @default(cuid())
+  projectId   String
+  category    String      // e.g., "Materials", "Labor", "Equipment", "Overhead"
+  subcategory String?     // e.g., "Cement", "Steel", "Contractor Fee"
+  allocated   Decimal     @db.Decimal(12, 2)
+  spent       Decimal     @db.Decimal(12, 2) @default(0)
+  committed   Decimal     @db.Decimal(12, 2) @default(0) // Committed but not yet spent
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category])
+}
+
 model Milestone {
   id        String   @id @default(cuid())
   projectId String
   title     String
   date      DateTime
-  progress  Int      @default(0)
+  progress  Int      @default(0) // 0-100 percentage
   notes     String?
   photos    String[] @default([])
+  geo       Json?    // GeoJSON for milestone location
+  latitude  Float?   // For easier querying
+  longitude Float?   // For easier querying
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([latitude, longitude])
 }
 
 // ===== SCHEMES & ELIGIBILITY =====

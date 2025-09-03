@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 // Check if we're in a development environment without Prisma binaries
-const canUsePrisma = () => {
+export const canUsePrisma = () => {
   try {
     // Try to create a PrismaClient instance
     new PrismaClient()
