@@ -3,6 +3,8 @@ import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-in
 import { PWARegister } from '@/components/pwa/PWARegister'
 import { notFound } from 'next/navigation'
 import { locales } from '@/i18n'
+import { analytics } from '@/lib/analytics'
+import { seoService } from '@/lib/seo'
 
 type Props = {
   children: React.ReactNode
@@ -16,9 +18,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params: { locale } }: Props) {
   const t = await getTranslations({ locale, namespace: 'app' })
   
-  return {
-    title: `${t('title')} - Smart Village PWA`,
+  // Generate comprehensive SEO metadata
+  const metadata = seoService.generateMetadata({
+    title: t('title'),
     description: t('description'),
+    locale,
+    type: 'website',
+  })
+  
+  return {
+    ...metadata,
     manifest: '/manifest.webmanifest',
   }
 }
@@ -44,6 +53,11 @@ export default async function LocaleLayout({
   // Provide all messages to the client side
   const messages = await getMessages({ locale })
 
+  // Generate JSON-LD structured data
+  const organizationJsonLd = seoService.generateOrganizationJsonLd()
+  const websiteJsonLd = seoService.generateWebsiteJsonLd()
+  const jsonLdScript = seoService.renderJsonLdScript([organizationJsonLd, websiteJsonLd])
+
   return (
     <html lang={locale} className="font-sans">
       <head>
@@ -56,6 +70,19 @@ export default async function LocaleLayout({
         {/* PWA iOS icons */}
         <link rel="apple-touch-icon" href="/icon-192.svg" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.svg" />
+        
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript }}
+        />
+        
+        {/* Analytics Script */}
+        {analytics.getClientScript() && (
+          <script
+            dangerouslySetInnerHTML={{ __html: analytics.getClientScript() }}
+          />
+        )}
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>

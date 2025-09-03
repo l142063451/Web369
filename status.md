@@ -30,7 +30,7 @@ Smart, Green & Transparent Village PWA for Damday–Chuanala, Gangolihat, Pithor
 - [x] **PR12** - News, Notices & Events *(COMPLETED)*
 - [x] **PR13** - Directory & Economy *(COMPLETED)*
 - [x] **PR14** - Notifications Center *(COMPLETED)*
-- [ ] **PR15** - Analytics, SEO & Open Data
+- [x] **PR15** - Analytics, SEO & Open Data
 - [ ] **PR16** - Accessibility & Security Hardening
 - [ ] **PR17** - Coverage & Stability (85%+ target)
 - [ ] **PR18** - Release Packaging & GHCR Publishing
