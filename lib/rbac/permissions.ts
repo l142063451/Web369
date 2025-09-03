@@ -55,6 +55,12 @@ export const PERMISSIONS = {
   'system:audit': 'View audit logs',
   'system:backup': 'Manage backups',
   
+  // Notifications Management
+  'notifications:read': 'View notifications',
+  'notifications:write': 'Create and send notifications',
+  'notifications:template': 'Manage notification templates',
+  'notifications:test': 'Send test notifications',
+  
   // Moderation
   'moderate:content': 'Moderate content',
   'moderate:comments': 'Moderate comments',
