@@ -17,10 +17,34 @@ if (typeof global.fetch === 'undefined') {
 if (typeof global.Request === 'undefined') {
   global.Request = class Request {
     constructor(input, init = {}) {
-      this.url = input.toString()
+      this._url = input.toString()
       this.method = init.method || 'GET'
       this.headers = new Headers(init.headers)
       this.body = init.body
+    }
+    
+    get url() {
+      return this._url
+    }
+    
+    json() {
+      return Promise.resolve(this.body ? JSON.parse(this.body) : {})
+    }
+    
+    text() {
+      return Promise.resolve(this.body || '')
+    }
+    
+    formData() {
+      return Promise.resolve(new FormData())
+    }
+    
+    clone() {
+      return new this.constructor(this._url, {
+        method: this.method,
+        headers: this.headers,
+        body: this.body
+      })
     }
   }
 }
@@ -41,6 +65,16 @@ if (typeof global.Response === 'undefined') {
     
     async text() {
       return this.body
+    }
+    
+    static json(data, init = {}) {
+      return new Response(JSON.stringify(data), {
+        ...init,
+        headers: {
+          'Content-Type': 'application/json',
+          ...init.headers
+        }
+      })
     }
   }
 }
