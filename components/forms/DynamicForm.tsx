@@ -587,7 +587,7 @@ function FileUploadField({ field, onFilesChange, error }: {
   const [files, setFiles] = useState<File[]>([])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    multiple: field.fileConstraints?.multiple || false,
+    multiple: (field.fileConstraints?.maxFiles || 1) > 1,
     maxSize: field.fileConstraints?.maxSize || 5 * 1024 * 1024, // 5MB default
     accept: field.fileConstraints?.allowedTypes?.reduce((acc, type) => {
       acc[type] = []

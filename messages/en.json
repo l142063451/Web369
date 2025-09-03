@@ -108,5 +108,54 @@
     "updateAvailable": "App update available",
     "updateReady": "Update ready to install",
     "refresh": "Refresh"
+  },
+  "services": {
+    "title": "Government Services",
+    "subtitle": "Access various government services online. Submit requests, track status, and get updates.",
+    "processing_time": "Processing Time",
+    "documents_required": "Documents Required",
+    "apply_now": "Apply Now",
+    "days_single": "1 day",
+    "days_multiple": "{days} days",
+    "help": {
+      "title": "Need Help?",
+      "how_to_apply": "How to Apply",
+      "step1": "Select the service you need",
+      "step2": "Fill out the application form",
+      "step3": "Upload required documents",
+      "step4": "Submit and track your request",
+      "contact": "Contact Support",
+      "phone": "Phone: +91-XXXX-XXXXXX",
+      "email": "Email: support@example.com",
+      "office_hours": "Office Hours: 9 AM - 5 PM"
+    }
+  },
+  "my-requests": {
+    "title": "My Requests",
+    "subtitle": "Track all your service requests in one place",
+    "new_request": "New Request",
+    "filter_by_service": "Filter by Service",
+    "filter_by_status": "Filter by Status",
+    "all_services": "All Services",
+    "all_statuses": "All Statuses",
+    "loading": "Loading requests...",
+    "no_requests": "No Requests Found",
+    "no_requests_message": "You haven't submitted any service requests yet.",
+    "no_requests_filtered": "No requests found matching your filters.",
+    "submit_first_request": "Submit Your First Request",
+    "auth_required": "Authentication Required",
+    "auth_message": "Please sign in to view your service requests.",
+    "sign_in": "Sign In",
+    "status": "Status",
+    "submitted": "Submitted",
+    "due_date": "Due Date",
+    "view_details": "View Details",
+    "request_id": "Request ID",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In Progress", 
+      "resolved": "Resolved",
+      "rejected": "Rejected"
+    }
   }
 }
