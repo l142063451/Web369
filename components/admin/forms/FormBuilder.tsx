@@ -166,7 +166,7 @@ export function FormBuilder({ initialSchema, onSave, onPreview }: FormBuilderPro
         settings: template.settings,
       })
     }
-  }, [schema.id])
+  }, [schema.id, schema.title, schema.description])
 
   return (
     <div className="flex h-screen">
