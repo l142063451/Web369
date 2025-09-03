@@ -214,7 +214,7 @@ export class DirectoryService {
   /**
    * List directory entries with filters
    */
-  static async list(filters: z.infer<typeof DirectoryFiltersSchema> = {}) {
+  static async list(filters: Partial<z.infer<typeof DirectoryFiltersSchema>> = {}) {
     const validatedFilters = DirectoryFiltersSchema.parse(filters)
     const { page, limit, type, category, search, approved, hasGeo, userId, bounds } = validatedFilters
 
@@ -347,7 +347,7 @@ export class DirectoryService {
 
     const categoryMap = new Map<string, number>()
     
-    entries.forEach(entry => {
+    entries.forEach((entry: { products: any }) => {
       const products = entry.products as any
       if (products?.categories) {
         products.categories.forEach((category: string) => {

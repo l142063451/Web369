@@ -33,6 +33,12 @@ export const PERMISSIONS = {
   'projects:delete': 'Delete projects',
   'projects:publish': 'Publish projects',
   
+  // Directory Management
+  'directory:read': 'View directory entries',
+  'directory:write': 'Create/edit directory entries',
+  'directory:delete': 'Delete directory entries',
+  'directory:approve': 'Approve directory entries',
+  
   // User Management
   'users:read': 'View users',
   'users:create': 'Create users',
@@ -80,6 +86,8 @@ export const DEFAULT_ROLES = {
     'projects:read',
     'projects:create',
     'projects:edit',
+    'directory:read',
+    'directory:write',
     'system:translations',
     'moderate:content',
     'admin:access',
@@ -91,6 +99,8 @@ export const DEFAULT_ROLES = {
     'submissions:resolve',
     'projects:read',
     'projects:publish',
+    'directory:read',
+    'directory:approve',
     'moderate:content',
     'moderate:comments',
     'moderate:directory',
