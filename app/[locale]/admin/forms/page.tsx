@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '@/lib/auth/authOptions'
 import { checkPermission } from '@/lib/rbac/permissions'
+import { formService } from '@/lib/forms/service'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -268,6 +269,24 @@ export default async function AdminFormsPage() {
     redirect('/admin')
   }
 
+  // Fetch real forms data
+  const formsResult = await formService.getForms({ limit: 50 })
+  const realForms = formsResult.forms.map(form => ({
+    id: form.id,
+    name: form.name,
+    category: (form.schema as any)?.settings?.category || 'general',
+    status: form.active ? 'active' as const : 'inactive' as const,
+    submissions: (form as any)._count?.submissions || 0,
+    slaDays: form.slaDays,
+    createdAt: form.createdAt.toISOString(),
+    createdBy: {
+      name: (form as any).createdByUser?.name || 'Unknown',
+      email: (form as any).createdByUser?.email || 'unknown@example.com'
+    }
+  }))
+
+  const displayForms = realForms.length > 0 ? realForms : mockForms
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -316,12 +335,12 @@ export default async function AdminFormsPage() {
               </Button>
             </div>
             <div className="text-sm text-gray-500">
-              Showing {mockForms.length} forms
+              Showing {displayForms.length} forms
             </div>
           </div>
 
           <Suspense fallback={<div>Loading forms...</div>}>
-            <FormsTable forms={mockForms} />
+            <FormsTable forms={displayForms} />
           </Suspense>
         </CardContent>
       </Card>
