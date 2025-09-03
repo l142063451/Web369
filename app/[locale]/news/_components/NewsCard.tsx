@@ -5,6 +5,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { type News } from '@/lib/news-events'
 
 interface NewsCardProps {
@@ -12,6 +13,9 @@ interface NewsCardProps {
 }
 
 export function NewsCard({ article }: NewsCardProps) {
+  const t = useTranslations('news')
+  const tCommon = useTranslations('common')
+  
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
@@ -95,7 +99,7 @@ export function NewsCard({ article }: NewsCardProps) {
             href={`/news/${article.slug}`}
             className="text-green-600 hover:text-green-800 font-medium flex items-center space-x-1 transition-colors"
           >
-            <span>Read more</span>
+            <span>{t('read_more')}</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
