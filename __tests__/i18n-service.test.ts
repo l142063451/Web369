@@ -16,6 +16,9 @@ jest.mock('@/lib/db', () => ({
       create: jest.fn(),
       update: jest.fn(),
     },
+    auditLog: {
+      create: jest.fn(),
+    },
   },
   canUsePrisma: jest.fn(() => false), // Force mock usage in tests
 }))
