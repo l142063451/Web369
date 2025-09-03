@@ -50,6 +50,12 @@ const navigationItems: NavigationItem[] = [
     description: 'News articles and announcements'
   },
   {
+    name: 'Notices',
+    href: '/admin/notices',
+    icon: Bell,
+    description: 'Official notices and deadlines'
+  },
+  {
     name: 'Media Library',
     href: '/admin/media',
     icon: Image,
