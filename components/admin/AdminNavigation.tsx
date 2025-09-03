@@ -19,7 +19,8 @@ import {
   Database,
   FileSearch,
   Home,
-  MessageSquare
+  MessageSquare,
+  Newspaper
 } from 'lucide-react'
 
 interface NavigationItem {
@@ -41,6 +42,12 @@ const navigationItems: NavigationItem[] = [
     href: '/admin/content',
     icon: FileText,
     description: 'Pages, sections, and blocks'
+  },
+  {
+    name: 'News & Articles',
+    href: '/admin/news',
+    icon: Newspaper,
+    description: 'News articles and announcements'
   },
   {
     name: 'Media Library',

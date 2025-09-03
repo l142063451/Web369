@@ -255,7 +255,7 @@ export function SchemeEditor({
                   </div>
                 ) : (
                   <p className="text-gray-500 text-center py-4">
-                    No documents added yet. Click "Add Document" to get started.
+                    No documents added yet. Click &ldquo;Add Document&rdquo; to get started.
                   </p>
                 )}
               </CardContent>
@@ -309,7 +309,7 @@ export function SchemeEditor({
                   </div>
                 ) : (
                   <p className="text-gray-500 text-center py-4">
-                    No process steps added yet. Click "Add Step" to get started.
+                    No process steps added yet. Click &ldquo;Add Step&rdquo; to get started.
                   </p>
                 )}
               </CardContent>
@@ -359,7 +359,7 @@ export function SchemeEditor({
                   </div>
                 ) : (
                   <p className="text-gray-500 text-center py-4">
-                    No links added yet. Click "Add Link" to get started.
+                    No links added yet. Click &ldquo;Add Link&rdquo; to get started.
                   </p>
                 )}
               </CardContent>
