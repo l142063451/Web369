@@ -18,7 +18,10 @@
     "build-storybook": "storybook build",
     "lighthouse": "lhci autorun",
     "build-sw": "node scripts/build-sw.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "update-status": "./scripts/update-status.sh",
+    "ci-success": "./scripts/update-status.sh ci-success",
+    "ci-failure": "./scripts/update-status.sh ci-failure"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.0",

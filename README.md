@@ -48,6 +48,17 @@ pnpm lint         # Run ESLint
 pnpm typecheck    # Run TypeScript compiler
 pnpm test         # Run Jest tests
 pnpm test:e2e     # Run Playwright E2E tests
+pnpm update-status # Update status.md timestamp
+pnpm ci-success   # Mark CI as successful in status
+pnpm ci-failure   # Mark CI as failed in status
+```
+
+### Access Points
+
+- **Application**: http://localhost:3000
+- **Admin Panel**: http://localhost:3000/admin
+- **Storybook**: http://localhost:6006 (run `pnpm storybook`)
+- **Mailhog**: http://localhost:8025
 pnpm storybook    # Start Storybook
 pnpm lighthouse   # Run Lighthouse CI
 ```
