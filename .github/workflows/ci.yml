@@ -65,34 +65,30 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app
           REDIS_URL: redis://localhost:6379
           
-      - name: Update status.md on success
-        if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+      - name: Update status.md with CI results
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
         run: |
-          # Use the update script for consistency
-          ./scripts/update-status.sh ci-success
-          
-          # Commit and push if changes were made
+          # Set git configuration
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet status.md; then
-            git add status.md
-            git commit -m "chore: update status.md timestamp and CI status [skip ci]"
-            git push
+          
+          # Use the enhanced automation script
+          chmod +x ./scripts/update-status.sh ./scripts/git-status-ops.sh
+          
+          # Update status based on job result
+          if [ "${{ job.status }}" = "success" ]; then
+            ./scripts/update-status.sh ci-success
+          else
+            ./scripts/update-status.sh ci-failure
           fi
           
-      - name: Update status.md on failure
-        if: failure() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
-        run: |
-          # Use the update script for consistency
-          ./scripts/update-status.sh ci-failure
-          
-          # Commit and push if changes were made
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Commit and push if changes were made  
           if ! git diff --quiet status.md; then
             git add status.md
-            git commit -m "chore: update status.md with CI failure [skip ci]"
+            git commit -m "chore(ci): auto-update status.md - $(date -u '+%Y-%m-%d %H:%M UTC') [skip ci]"
             git push
+          else
+            echo "No changes to status.md"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
